@@ -12,6 +12,7 @@ class ModuleWindow;
 class ModuleInput;
 class ModuleUI;
 class ModuleRenderer3D;
+class ModuleProfile;
 
 class Application
 {
@@ -37,6 +38,7 @@ public:
 	ModuleInput* input = nullptr;
 	ModuleUI* ui = nullptr;
 	ModuleRenderer3D* renderer = nullptr;
+	ModuleProfile* profile = nullptr;
 
 private:
 	std::list<Module*> list_modules;

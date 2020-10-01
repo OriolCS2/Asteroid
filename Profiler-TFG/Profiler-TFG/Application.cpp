@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleProfile.h"
 #include "ModuleUI.h"
 #include "ModuleRenderer3D.h"
 #include "mmgr/mmgr.h"
@@ -18,9 +19,11 @@ Application::Application()
 	input = new ModuleInput();
 	ui = new ModuleUI();
 	renderer = new ModuleRenderer3D();
+	profile = new ModuleProfile();
 
 	AddModule(window);
 	AddModule(input);
+	AddModule(profile);
 	AddModule(ui);
 	AddModule(renderer);
 }

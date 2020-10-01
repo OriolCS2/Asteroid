@@ -1,6 +1,7 @@
 ﻿#include "ModuleUI.h"
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #include <experimental/filesystem>
+#include "ModuleInput.h"
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_internal.h"
@@ -123,6 +124,14 @@ void ModuleUI::Draw()
 	// Create Docking
 	UpdatePanels();
 
+	static bool show_demo = false;
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_REPEAT) {
+		show_demo = true;
+	}
+
+	if (show_demo) {
+		ImGui::ShowDemoWindow(&show_demo);
+	}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

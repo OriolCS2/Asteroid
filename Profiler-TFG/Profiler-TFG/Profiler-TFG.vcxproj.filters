@@ -32,6 +32,9 @@
     <Filter Include="Tools\Gkew">
       <UniqueIdentifier>{36395cde-babe-469b-9aa3-4c65913886e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ProfileTools">
+      <UniqueIdentifier>{fc64fc24-b9d0-4a3a-9876-7aee78200c6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -553,6 +556,15 @@
     <ClInclude Include="PanelSectionTree.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="Frame.h">
+      <Filter>ProfileTools</Filter>
+    </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>ProfileTools</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleProfile.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -719,6 +731,15 @@
     </ClCompile>
     <ClCompile Include="PanelSectionTree.cpp">
       <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Frame.cpp">
+      <Filter>ProfileTools</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>ProfileTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleProfile.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
