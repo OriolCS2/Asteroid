@@ -541,6 +541,18 @@
     <ClInclude Include="ModuleRenderer3D.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="PanelFrames.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelDetailedFrame.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelSectionFunctions.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelSectionTree.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -695,6 +707,18 @@
     </ClCompile>
     <ClCompile Include="ModuleRenderer3D.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelFrames.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelDetailedFrame.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelFrameFunctions.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelSectionTree.cpp">
+      <Filter>Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

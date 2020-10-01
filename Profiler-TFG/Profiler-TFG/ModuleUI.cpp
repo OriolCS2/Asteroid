@@ -8,10 +8,14 @@
 #include <gl/GL.h>
 #include "Time.h"
 #include "SDL/include/SDL_assert.h"
+#include "PanelDetailedFrame.h"
+#include "PanelSectionTree.h"
 #include "ModuleWindow.h"
 #include "JSONfilepack.h"
 #include "ModuleRenderer3D.h"
 #include <string>
+#include "PanelSectionFunctions.h"
+#include "PanelFrames.h"
 #include <fstream>
 #include "IconFontCppHeaders/IconsFontAwesome5.h"
 #include "mmgr/mmgr.h"
@@ -44,8 +48,6 @@ bool ModuleUI::Start()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	io.IniFilename = NULL;
-	io.WantSaveIniSettings = false;
 
 	static ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 
@@ -58,6 +60,11 @@ bool ModuleUI::Start()
 
 	ImGui_ImplOpenGL3_Init();
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
+
+	panels.push_back(panel_frames = new PanelFrames("Frames"));
+	panels.push_back(panel_detailed_frame = new PanelDetailedFrame("Detailed Frame"));
+	panels.push_back(panel_section_functions = new PanelSectionFunctions("Section Functions"));
+	panels.push_back(panel_section_tree = new PanelSectionTree("Section Tree"));
 
 	return ret;
 }
@@ -125,6 +132,16 @@ void ModuleUI::MainMenuBar()
 {
 	ImGui::BeginMainMenuBar();
 	
+	if (ImGui::BeginMenu("File")) {
+
+		ImGui::EndMenu();
+	}
+
+	if (ImGui::BeginMenu("About")) {
+
+		ImGui::EndMenu();
+	}
+
 	ImGui::EndMainMenuBar();
 }
 

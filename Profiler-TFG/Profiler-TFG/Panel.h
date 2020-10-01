@@ -32,7 +32,7 @@ private:
 
 protected:
 	std::string panel_name;
-	bool enabled = false;
+	bool enabled = true;
 
 private: 
 

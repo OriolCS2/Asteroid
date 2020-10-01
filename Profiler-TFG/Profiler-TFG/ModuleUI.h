@@ -13,7 +13,11 @@
 typedef unsigned long long u64;
 
 class Panel;
+class PanelFrames;
 class ImFont;
+class PanelSectionTree;
+class PanelDetailedFrame;
+class PanelSectionFunctions;
 
 #define MAX_ON_PLAY_INI_PATH "Library/tmp.ini"
 
@@ -35,13 +39,9 @@ public:
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 
-	void ClearPanels();
-
 	// draw UI
 	void MainMenuBar();
 	void Draw();
-
-	void LoadImGui();
 
 	void ChangeEnableDemo();
 
@@ -63,6 +63,10 @@ private:
 	SDL_GLContext context;
 public:
 	std::vector<Panel*> panels;
+	PanelFrames* panel_frames = nullptr;
+	PanelDetailedFrame* panel_detailed_frame = nullptr;
+	PanelSectionFunctions* panel_section_functions = nullptr;
+	PanelSectionTree* panel_section_tree = nullptr;
 
 	bool pauseImGui = false;
 };
