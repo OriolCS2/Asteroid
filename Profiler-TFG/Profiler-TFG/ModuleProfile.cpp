@@ -20,7 +20,7 @@ bool ModuleProfile::Start()
 	};
 
 	Frame* frame = new Frame();
-	frame->ms = 680;
+	frame->ms = 38;
 	frames.push_back(frame);
 
 	AddFunction(frame, "PreUpdate", "App", 10, 6);
@@ -37,6 +37,15 @@ bool ModuleProfile::Start()
 	frame->functions.back()->functions.push_back(new Function("Render", "ModuleRenderer", 20));
 	frame->functions.back()->functions.back()->ms = 14;
 	AddFunction(frame, "PostUpdate", "App", 22, 12);
+
+	frame = new Frame();
+	frame->ms = 9;
+	frames.push_back(frame);
+	AddFunction(frame, "PreUpdate", "App", 10, 3);
+	AddFunction(frame, "Update", "App", 16, 4);
+	frame->functions.back()->functions.push_back(new Function("Render", "ModuleRenderer", 20));
+	frame->functions.back()->functions.back()->ms = 14;
+	AddFunction(frame, "PostUpdate", "App", 22, 2);
 
 	return true;
 }
