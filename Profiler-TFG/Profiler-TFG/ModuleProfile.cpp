@@ -20,7 +20,7 @@ bool ModuleProfile::Start()
 	};
 
 	Frame* frame = new Frame();
-	frame->ms = 56;
+	frame->ms = 680;
 	frames.push_back(frame);
 
 	AddFunction(frame, "PreUpdate", "App", 10, 6);

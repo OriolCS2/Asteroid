@@ -58,9 +58,8 @@ static float Saw(void*, int i)
 
 void PanelFrames::PanelLogic()
 {
-	ImGui::Begin(panel_name.data(), 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_HorizontalScrollbar);
-	//ImGui::PlotHistogram("##", Saw, NULL, App->profile->frames.size(), 0, NULL, 0.0F, 66.0F, ImVec2(20, 80));
-
+	ImGui::Begin(panel_name.data(), 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1, 0));
 	for (auto item = App->profile->frames.begin(); item != App->profile->frames.end(); ++item) {
 		ImGui::PushID(*item);
@@ -71,6 +70,34 @@ void PanelFrames::PanelLogic()
 		ImGui::SameLine();
 	}
 	ImGui::PopStyleVar();
+
+	ImVec2 minLinesScreen = ImGui::GetWindowContentRegionMin() + ImVec2(0, ImGui::GetWindowPos().y);
+	ImVec2 maxLinesScreen = ImGui::GetWindowContentRegionMax() + ImVec2(0, ImGui::GetWindowPos().y);
+
+	float windowHeight = maxLinesScreen.y - minLinesScreen.y;
+	float windowOffset = minLinesScreen.y;
+
+	ImGui::GetWindowDrawList()->AddLine({ 0, minLinesScreen.y }, { ImGui::GetWindowWidth(), minLinesScreen.y }, ImGui::GetColorU32(ImGuiCol_Separator));
+	
+	float posY = windowHeight * 0.25F;
+	ImGui::SetCursorScreenPos({ 7, windowOffset + posY - ImGui::GetFont()->FontSize - 3});
+	ImGui::Text("16.6 ms");
+	ImGui::GetWindowDrawList()->AddLine({ 0, posY + windowOffset }, { ImGui::GetWindowWidth(), posY + windowOffset }, ImGui::GetColorU32(ImGuiCol_Separator));
+
+	posY = windowHeight * 0.5F;
+	ImGui::SetCursorScreenPos({ 7, windowOffset + posY - ImGui::GetFont()->FontSize - 3});
+	ImGui::Text("33.3 ms");
+	ImGui::GetWindowDrawList()->AddLine({ 0, posY + windowOffset }, { ImGui::GetWindowWidth(), posY + windowOffset }, ImGui::GetColorU32(ImGuiCol_Separator));
+
+	posY = windowHeight * 0.75F;
+	ImGui::SetCursorScreenPos({ 7, windowOffset + posY - ImGui::GetFont()->FontSize - 3});
+	ImGui::Text("50 ms");
+	ImGui::GetWindowDrawList()->AddLine({ 0, posY + windowOffset }, { ImGui::GetWindowWidth(), posY + windowOffset }, ImGui::GetColorU32(ImGuiCol_Separator));
+
+	posY = windowHeight;
+	ImGui::SetCursorScreenPos({ 7, windowOffset + posY - ImGui::GetFont()->FontSize - 3});
+	ImGui::Text("66.6 ms");
+	ImGui::GetWindowDrawList()->AddLine({ 0, posY + windowOffset }, { ImGui::GetWindowWidth(), posY + windowOffset }, ImGui::GetColorU32(ImGuiCol_Separator));
 
 	ImGui::End();
 }
