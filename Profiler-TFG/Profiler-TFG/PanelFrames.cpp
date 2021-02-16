@@ -44,18 +44,6 @@ static void AddTextVertical(ImDrawList* DrawList, const char* text, ImVec2 pos, 
 	}
 }
 
-static float Saw(void*, int i) 
-{	
-	int index = 0;
-	for (auto item = App->profile->frames.begin(); item != App->profile->frames.end(); ++item) {
-		if (index == i) {
-			return (*item)->ms;
-		}
-		++index;
-	}
-	return 0;
-}
-
 void PanelFrames::PanelLogic()
 {
 	ImGui::Begin(panel_name.data(), 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
@@ -71,7 +59,18 @@ void PanelFrames::PanelLogic()
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1, 0));
 	for (auto item = App->profile->frames.begin(); item != App->profile->frames.end(); ++item) {
 		ImGui::PushID(*item);
-		ImGui::Button("##", { FRAME_WIDTH, ((float)(*item)->ms * ratio) / 16.6F });
+		if (frame == *item) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(ImGuiCol_ButtonActive));
+		}
+		if (ImGui::Button("##", { FRAME_WIDTH, ((float)(*item)->ms * ratio) / 16.6F })) {
+			if (frame == *item) {
+				ImGui::PopStyleColor();
+			}
+			frame = *item;
+		} 
+		else if (frame == *item) {
+			ImGui::PopStyleColor();
+		}
 		ImGui::PopID();
 		std::string ms_text = std::to_string((*item)->ms) + " ms";
 		AddTextVertical(ImGui::GetWindowDrawList(), ms_text.data(), ImGui::GetItemRectMin() + ImVec2(7, ImGui::CalcTextSize(ms_text.data()).x + 5), ImGui::GetColorU32(ImGuiCol_Text));
