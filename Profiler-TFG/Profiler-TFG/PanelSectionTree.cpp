@@ -35,14 +35,23 @@ void PanelSectionTree::ShowFunctionTree(Function* function)
 	ImVec2 cursorScreenPos = ImGui::GetCursorScreenPos();
 	bool isLeaf = function->functions.empty();
 
-	ImGui::GetWindowDrawList()->AddRectFilled(cursorScreenPos + ImVec2(itemBoxSpacingX, 0), cursorScreenPos + ImVec2(boxSize + itemBoxSpacingX, 18), ImGui::GetColorU32(ImVec4(1, 0, 0, 1)));
+	if (isLeaf) {
+		ImGui::GetWindowDrawList()->AddRectFilled(cursorScreenPos + ImVec2(itemBoxSpacingX, 0), cursorScreenPos + ImVec2(boxSize + itemBoxSpacingX, 18), ImGui::GetColorU32(ImVec4(0, 0.7, 0, 1)));
+	}
+	else {
+		float childSize = boxSize * ((float)function->GetChildMs() / (float)function->ms);
+		ImGui::GetWindowDrawList()->AddRectFilled(cursorScreenPos + ImVec2(itemBoxSpacingX, 0), cursorScreenPos + ImVec2(childSize + itemBoxSpacingX, 18), ImGui::GetColorU32(ImVec4(0.7, 0, 0, 1)));
+		ImGui::GetWindowDrawList()->AddRectFilled(cursorScreenPos + ImVec2(childSize + itemBoxSpacingX, 0), cursorScreenPos + ImVec2(childSize + itemBoxSpacingX + boxSize -childSize, 18), ImGui::GetColorU32(ImVec4(0, 0.7, 0, 1)));
+	
+		ImGui::Text(("    " + std::to_string(function->GetChildMs())).data());
+		ImGui::SameLine();
+		ImGui::SetCursorScreenPos(cursorScreenPos);
+	}
 
-	ImGui::Text(("    " + std::to_string(function->ms)).data());
+	ImGui::Text(("                   " + std::to_string(function->GetSelfMs())).data());
 	ImGui::SameLine();
-	ImGui::Text(("            " + std::to_string(function->GetSelfMs())).data());
-	ImGui::SameLine();
-
 	ImGui::SetCursorScreenPos(cursorScreenPos);
+
 	if (ImGui::TreeNodeEx(("                    " + function->name).data(), ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | (isLeaf ? ImGuiTreeNodeFlags_Leaf : 0))) {
 		for (auto item = function->functions.begin(); item != function->functions.end(); ++item) {
 			ShowFunctionTree(*item);
