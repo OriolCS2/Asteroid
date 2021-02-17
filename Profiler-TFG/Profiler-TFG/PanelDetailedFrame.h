@@ -16,6 +16,10 @@ private:
 
 	void ShowFunctions(std::list<Function*>* functions, float cursorX, float totalSize, unsigned __int32 sizeMs);
 
+public:
+
+	Function* function_selected = nullptr;
+
 private:
 
 	float scale = 1.0F;

@@ -191,6 +191,23 @@ ImFont* ModuleUI::GetFont(Font font)
 	return imFonts[font];
 }
 
+void ModuleUI::OnFrameDeselected()
+{
+	panel_frames->frame = nullptr;
+	panel_detailed_frame->function_selected = nullptr;
+}
+
+void ModuleUI::OnFrameSelected(Frame* frame)
+{
+	panel_frames->frame = frame;
+	panel_detailed_frame->function_selected = nullptr;
+}
+
+void ModuleUI::OnFunctionSelected(Function* function)
+{
+	panel_detailed_frame->function_selected = function;
+}
+
 void ModuleUI::LoadFontDefaultFontWithIcons(float fontSize, const char* iconsPath, float iconsSize, ImWchar* fontRanges, Font font)
 {
 	ImFontConfig default_config;

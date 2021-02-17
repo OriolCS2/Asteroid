@@ -21,6 +21,9 @@ class PanelSectionFunctions;
 
 #define MAX_ON_PLAY_INI_PATH "Library/tmp.ini"
 
+class Frame;
+class Function;
+
 enum class Font {
 	DEFAULT,
 	DEFAULT_X0F3,
@@ -46,6 +49,11 @@ public:
 	void ChangeEnableDemo();
 
 	ImFont* GetFont(Font font);
+
+	void OnFrameDeselected();
+
+	void OnFrameSelected(Frame* frame);
+	void OnFunctionSelected(Function* function);
 
 private:
 

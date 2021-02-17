@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleProfile.h"
 #include "imgui/imgui.h"
+#include "ModuleUI.h"
 #include "imgui/imgui_internal.h"
 
 #define FRAME_WIDTH 25
@@ -66,7 +67,7 @@ void PanelFrames::PanelLogic()
 			if (frame == *item) {
 				ImGui::PopStyleColor();
 			}
-			frame = *item;
+			App->ui->OnFrameSelected(*item);
 		} 
 		else if (frame == *item) {
 			ImGui::PopStyleColor();

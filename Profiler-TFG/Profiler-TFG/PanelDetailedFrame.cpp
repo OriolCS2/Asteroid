@@ -4,6 +4,7 @@
 #include <queue>
 #include "Function.h"
 #include "Frame.h"
+#include "ModuleInput.h"
 
 PanelDetailedFrame::PanelDetailedFrame(const std::string& panel_name) : Panel(panel_name)
 {
@@ -12,9 +13,14 @@ PanelDetailedFrame::PanelDetailedFrame(const std::string& panel_name) : Panel(pa
 PanelDetailedFrame::~PanelDetailedFrame()
 {
 }
-// TODO: update scale with the mouse z
+
 void PanelDetailedFrame::PanelLogic()
 {
+	float mouseZ = App->input->GetMouseZ();
+	if (mouseZ != 0.0F) {
+		scale = Clamp(scale + mouseZ * 0.5F, 1.0F, 10.0F);
+	}
+
 	ImGui::Begin(panel_name.data(), 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_HorizontalScrollbar);
 
 	Frame* frame = App->ui->panel_frames->frame;
@@ -34,8 +40,19 @@ void PanelDetailedFrame::ShowFunctions(std::list<Function*>* functions, float cu
 		float itemSize = (totalSize * (float)(*item)->ms) / (float)sizeMs;
 		ImVec2 beforeCursor = ImGui::GetCursorPos();
 
+		if (function_selected == *item) {
+			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(ImGuiCol_ButtonActive));
+		}
 		ImGui::PushID(*item);
-		ImGui::Button((*item)->name.data(), ImVec2(itemSize, 0));
+		if (ImGui::Button((*item)->name.data(), ImVec2(itemSize, 0))) {
+			if (function_selected == *item) {
+				ImGui::PopStyleColor();
+			}
+			App->ui->OnFunctionSelected(*item);
+		}
+		else if (function_selected == *item) {
+			ImGui::PopStyleColor();
+		}
 		ImGui::PopID();
 
 		ImVec2 afterCursor = ImGui::GetCursorPos();
