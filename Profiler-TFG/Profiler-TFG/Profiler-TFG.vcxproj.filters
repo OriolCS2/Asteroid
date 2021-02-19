@@ -726,9 +726,6 @@
     <ClCompile Include="PanelDetailedFrame.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="PanelFrameFunctions.cpp">
-      <Filter>Panels</Filter>
-    </ClCompile>
     <ClCompile Include="PanelSectionTree.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -740,6 +737,9 @@
     </ClCompile>
     <ClCompile Include="ModuleProfile.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelSectionFunctions.cpp">
+      <Filter>Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

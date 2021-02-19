@@ -10,3 +10,16 @@ Frame::~Frame()
 		delete* item;
 	}
 }
+
+void Frame::GenerateFunctionsData()
+{
+	
+}
+
+const std::list<Function*>& Frame::GetFunctionsData()
+{
+	if (all_functions_data.empty()) {
+		GenerateFunctionsData();
+	}
+	return all_functions_data;
+}
