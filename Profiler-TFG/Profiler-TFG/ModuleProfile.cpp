@@ -1,5 +1,6 @@
 #include "ModuleProfile.h"
 #include "Application.h"
+#include "ModuleUI.h"
 #include "Function.h"
 #include "Frame.h"
 
@@ -52,10 +53,34 @@ bool ModuleProfile::Start()
 
 bool ModuleProfile::CleanUp()
 {
+	ClearFrames();
+
+	return true;
+}
+
+void ModuleProfile::ConnectClient()
+{
+	state = ProfileState::WAITING_INFO;
+}
+
+void ModuleProfile::DisconnectClient()
+{
+	state = ProfileState::INFO;
+}
+
+void ModuleProfile::ResetInfo()
+{
+	if (state == ProfileState::INFO) {
+		ClearFrames();
+		App->ui->OnFrameDeselected();
+		state = ProfileState::NONE;
+	}
+}
+
+void ModuleProfile::ClearFrames()
+{
 	for (auto item = frames.begin(); item != frames.end(); ++item) {
 		delete* item;
 	}
 	frames.clear();
-
-	return true;
 }

@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_internal.h"
+#include "ModuleProfile.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include <gl/GL.h>
 #include "Time.h"
@@ -53,9 +54,9 @@ bool ModuleUI::Start()
 	static ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 
 	// load the default the first to set it as the main font, so no need to use PushFont and Pop font
-	LoadFontDefaultFontWithIcons(13, "fa-solid-900.ttf", 12, icons_ranges, Font::DEFAULT);
+	LoadFontDefaultFontWithIcons(13, "fa-solid-900.ttf", 30, icons_ranges, Font::DEFAULT);
 	LoadFontDefaultFontWithIcons(16.9F, "fa-solid-900.ttf", 15.6F, icons_ranges, Font::DEFAULT_X0F3);
-	LoadIconsFont( "fa-solid-900.ttf", 17, icons_ranges, Font::ICONS_17);
+	LoadIconsFont("fa-solid-900.ttf", 17, icons_ranges, Font::ICONS_17);
 
 	ImGui::StyleColorsDark();
 
@@ -122,7 +123,38 @@ void ModuleUI::Draw()
 	}
 	ImGui::End();
 	// Create Docking
-	UpdatePanels();
+
+	switch (App->profile->state) {
+	case ProfileState::NONE: {
+		ImGui::SetWindowSize(ImVec2(30, 30), ImGuiCond_Always);
+		ImGui::SetNextWindowPos(ImGui::GetIO().DisplaySize * 0.5f, ImGuiCond_Always, { 0.5f, 0.5f });
+		ImGui::Begin("Play", nullptr, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground);
+		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0.9));
+		if (ImGui::Button(ICON_FA_PLAY, ImVec2(0, 35))) {
+			App->profile->ConnectClient();
+		}
+		ImGui::PopStyleVar();
+		ImGui::End();
+		break; }	
+	case ProfileState::WAITING_INFO: {
+		ImGui::SetWindowSize(ImVec2(50, 30), ImGuiCond_Always);
+		ImGui::SetNextWindowPos(ImGui::GetIO().DisplaySize * 0.5f, ImGuiCond_Always, { 0.5f, 0.5f });
+		ImGui::Begin("Pause", nullptr, ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoBackground);
+		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0.9));
+		ImGui::SetCursorPosX(27);
+		if (ImGui::Button(ICON_FA_PAUSE, ImVec2(0, 35))) {
+			App->profile->DisconnectClient();
+		}
+		ImGui::PopStyleVar();
+		ImGui::Spacing();
+		ImGui::SetCursorPosX(13);
+		ImGui::Text("Frames: %i", 10);
+		ImGui::End();
+		break; }
+	case ProfileState::INFO: {
+		UpdatePanels();
+		break; }
+	}
 
 	static bool show_demo = false;
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_REPEAT) {
@@ -142,7 +174,16 @@ void ModuleUI::MainMenuBar()
 	ImGui::BeginMainMenuBar();
 	
 	if (ImGui::BeginMenu("File")) {
-
+		if (ImGui::MenuItem("Load", nullptr, nullptr, App->profile->state == ProfileState::INFO || App->profile->state == ProfileState::NONE)) {
+			
+		}
+		if (ImGui::MenuItem("Save", nullptr, nullptr, App->profile->state == ProfileState::INFO)) {
+			
+		}
+		ImGui::Separator();
+		if (ImGui::MenuItem("Clear", nullptr, nullptr, App->profile->state == ProfileState::INFO)) {
+			App->profile->ResetInfo();
+		}
 		ImGui::EndMenu();
 	}
 

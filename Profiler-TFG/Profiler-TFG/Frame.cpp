@@ -13,7 +13,7 @@ Frame::~Frame()
 
 void Frame::GenerateFunctionsData()
 {
-	
+	// TODO: passar per totes les funcions i ajuntar la info de totes
 }
 
 const std::list<Function*>& Frame::GetFunctionsData()
