@@ -130,12 +130,13 @@ void ModuleProfile::LookForClients()
 
 void ModuleProfile::RecieveClientData()
 {
-	if (HasSocketInfo(client)) {
+	while (HasSocketInfo(client)) {
 		Packet packet;
 		int bytes = recv(client, packet.GetBufferPtr(), packet.GetCapacity(), 0);
 
 		if (bytes == SOCKET_ERROR || bytes == ECONNRESET || bytes == 0) {
 			DisconnectClient();
+			break;
 		}
 		else {
 			CreateData(packet);
