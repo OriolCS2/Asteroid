@@ -217,6 +217,7 @@
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="Packet.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelDetailedFrame.h" />
     <ClInclude Include="PanelSectionFunctions.h" />
@@ -360,6 +361,7 @@
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="Packet.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelDetailedFrame.cpp" />
     <ClCompile Include="PanelSectionFunctions.cpp" />

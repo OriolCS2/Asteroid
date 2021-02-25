@@ -1,11 +1,15 @@
-#ifndef __ModuleWProfile_H__
-#define __ModuleWProfile_H__
+#pragma once
 
 #include "Module.h"
 #include <list>
 
+#include "Packet.h"
+
+#define PROTOCOL_ID 123456789
+
 enum class ProfileState {
 	NONE,
+	CONNECTING,
 	WAITING_INFO,
 	INFO
 };
@@ -20,6 +24,7 @@ public:
 	virtual ~ModuleProfile();
 
 	bool Start();
+	update_status Update(float dt);
 
 	bool CleanUp();
 
@@ -29,11 +34,21 @@ public:
 
 private:
 
+	void LookForClients();
+	void RecieveClientData();
+	void CreateData(const Packet& data);
+
+	bool HasSocketInfo(SOCKET s);
+	
 	void ClearFrames();
 
 public:
 	std::list<Frame*> frames;
 	ProfileState state = ProfileState::NONE;
+
+private:
+
+	SOCKET server;
+	SOCKET client;
 };
 
-#endif

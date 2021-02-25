@@ -4,6 +4,9 @@
 #include "Function.h"
 #include "Frame.h"
 
+#pragma comment(lib, "ws2_32.lib")
+
+
 ModuleProfile::ModuleProfile(bool start_enabled) : Module(start_enabled)
 {
 }
@@ -48,24 +51,60 @@ bool ModuleProfile::Start()
 	frame->functions.back()->functions.back()->ms = 3.8;
 	AddFunction(frame, "PostUpdate", "App", 22, 2);
 
+	WSADATA wsaData;
+	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	if (iResult != NO_ERROR) {
+		LOG("Error sockets api");
+	}
+
 	return true;
+}
+
+update_status ModuleProfile::Update(float dt)
+{
+	switch (state) {
+	case ProfileState::CONNECTING: {
+		LookForClients();
+		break; }
+	case ProfileState::WAITING_INFO: {
+		RecieveClientData();
+		break; }
+	}
+
+	return UPDATE_CONTINUE;
 }
 
 bool ModuleProfile::CleanUp()
 {
+	WSACleanup();
 	ClearFrames();
-
 	return true;
 }
 
 void ModuleProfile::ConnectClient()
 {
-	state = ProfileState::WAITING_INFO;
+	state = ProfileState::CONNECTING;
+
+	server = socket(AF_INET, SOCK_STREAM, 0);
+
+	struct sockaddr_in bindAddr;
+	bindAddr.sin_family = AF_INET; // IPv4
+	bindAddr.sin_port = htons(8000); // Port
+	bindAddr.sin_addr.S_un.S_addr = INADDR_ANY; // Any local IP address
+
+	bind(server, (const struct sockaddr*)&bindAddr, sizeof(bindAddr));
+
+	if (listen(server, 1) == SOCKET_ERROR) {
+		LOG("Socket fail listening!");
+	}
 }
 
 void ModuleProfile::DisconnectClient()
 {
 	state = ProfileState::INFO;
+	// TODO: send something to client to close client
+	closesocket(server);
+	closesocket(client);
 }
 
 void ModuleProfile::ResetInfo()
@@ -75,6 +114,56 @@ void ModuleProfile::ResetInfo()
 		App->ui->OnFrameDeselected();
 		state = ProfileState::NONE;
 	}
+}
+
+void ModuleProfile::LookForClients()
+{
+	if (HasSocketInfo(server)) {
+		struct sockaddr_in clientAddr;
+		int clientSize = sizeof(clientAddr);
+		client = accept(server, (sockaddr*)&clientAddr, &clientSize);
+		if (client != INVALID_SOCKET && client != SOCKET_ERROR) {
+			state = ProfileState::WAITING_INFO; // TODO: fer que en el connecting surti el simbol de la rodona girant que tinc el loading de imgui widget al trello
+		}
+	}
+}
+
+void ModuleProfile::RecieveClientData()
+{
+	if (HasSocketInfo(client)) {
+		Packet packet;
+		int bytes = recv(client, packet.GetBufferPtr(), packet.GetCapacity(), 0);
+
+		if (bytes == SOCKET_ERROR || bytes == ECONNRESET || bytes == 0) {
+			DisconnectClient();
+		}
+		else {
+			CreateData(packet);
+		}
+	}
+}
+
+void ModuleProfile::CreateData(const Packet& data)
+{
+	int protoId;
+	data >> protoId;
+	if (protoId != PROTOCOL_ID) return;
+
+	LOG("Works");
+}
+
+bool ModuleProfile::HasSocketInfo(SOCKET s)
+{
+	fd_set readfds;
+	FD_ZERO(&readfds);
+	FD_SET(s, &readfds);
+
+	struct timeval timeout;
+	timeout.tv_sec = 0;
+	timeout.tv_usec = 0;
+
+	select(0, &readfds, nullptr, nullptr, &timeout);
+	return FD_ISSET(s, &readfds);
 }
 
 void ModuleProfile::ClearFrames()
