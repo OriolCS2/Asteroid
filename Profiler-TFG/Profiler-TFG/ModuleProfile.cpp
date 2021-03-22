@@ -146,11 +146,13 @@ void ModuleProfile::RecieveClientData()
 
 void ModuleProfile::CreateData(const Packet& data)
 {
-	int protoId;
+	double protoId;
 	data >> protoId;
 	if (protoId != PROTOCOL_ID) return;
 
-	LOG("Works");
+	Frame* frame = new Frame();
+	
+	frames.push_back(frame);
 }
 
 bool ModuleProfile::HasSocketInfo(SOCKET s)

@@ -148,7 +148,7 @@ void ModuleUI::Draw()
 		ImGui::PopStyleVar();
 		ImGui::Spacing();
 		ImGui::SetCursorPosX(13);
-		ImGui::Text("Frames: %i", 10);
+		ImGui::Text("Frames: %i", App->profile->frames.size());
 		ImGui::End();
 		break; }
 	case ProfileState::INFO: {

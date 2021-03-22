@@ -5,7 +5,7 @@
 
 #include "Packet.h"
 
-#define PROTOCOL_ID 123456789
+#define PROTOCOL_ID 123456789.0
 
 enum class ProfileState {
 	NONE,

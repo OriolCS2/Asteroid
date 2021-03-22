@@ -17,7 +17,11 @@ void PanelSectionTree::PanelLogic()
 
 	Function* function = App->ui->panel_detailed_frame->function_selected;
 	if (function != nullptr) {
+		ImGui::PushStyleColor(ImGuiCol_Header, 0);
+		ImGui::PushStyleColor(ImGuiCol_HeaderActive, 0);
+		ImGui::PushStyleColor(ImGuiCol_HeaderHovered, 0);
 		ShowFunctionTree(function);
+		ImGui::PopStyleColor(3);
 	}
 
 	ImGui::End();
