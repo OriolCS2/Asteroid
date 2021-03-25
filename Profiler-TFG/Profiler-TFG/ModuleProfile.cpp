@@ -102,7 +102,7 @@ void ModuleProfile::ConnectClient()
 void ModuleProfile::DisconnectClient()
 {
 	state = ProfileState::INFO;
-	// TODO: send something to client to close client
+	
 	closesocket(server);
 	closesocket(client);
 }

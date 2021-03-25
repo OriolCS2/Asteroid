@@ -41,14 +41,32 @@ SOCKET client = NULL;
 sockaddr_in bindAddr;
 Packet* packet = nullptr;
 
+bool HasSocketInfo(SOCKET socket)
+{
+	fd_set readfds;
+	FD_ZERO(&readfds);
+	FD_SET(socket, &readfds);
+
+	struct timeval timeout;
+	timeout.tv_sec = 0;
+	timeout.tv_usec = 0;
+
+	select(0, &readfds, nullptr, nullptr, &timeout);
+	return FD_ISSET(socket, &readfds);
+}
 
 ProfilerFrameData::ProfilerFrameData()
 {
 	if (isConnected || (isConnected = connect(client, (const sockaddr*)&bindAddr, sizeof(bindAddr)) != SOCKET_ERROR)) {
-		// TODO: check if recv data from profiler app to stop connection
-
-		packet = new Packet();
-		clock.Start();
+		if (HasSocketInfo(client)) {
+			closesocket(client);
+			client = socket(AF_INET, SOCK_STREAM, 0);
+			isConnected = false;
+		}
+		else {
+			packet = new Packet();
+			clock.Start();
+		}
 	}
 }
 
@@ -82,6 +100,15 @@ void ProfilerInit()
 
 void ProfilerCleanup()
 {
+	if (client != NULL) {
+		closesocket(client);
+	}
+
+	if (packet != nullptr) {
+		delete packet;
+		packet = nullptr;
+	}
+
 	if (WSACleanup() != NO_ERROR) {
 		// ERROR
 	}
