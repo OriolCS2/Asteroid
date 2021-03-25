@@ -33,7 +33,7 @@ void PanelDetailedFrame::PanelLogic()
 	ImGui::End();
 }
 
-void PanelDetailedFrame::ShowFunctions(std::list<Function*>* functions, float cursorX, float totalSize, unsigned __int32 sizeMs)
+void PanelDetailedFrame::ShowFunctions(std::list<Function*>* functions, float cursorX, float totalSize, double sizeMs)
 {
 	ImGui::SetCursorPosX(cursorX);
 	for (auto item = functions->begin(); item != functions->end(); ++item) {

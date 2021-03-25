@@ -156,7 +156,16 @@ void ModuleProfile::CreateData(const Packet& data)
 	if (protoId != PROTOCOL_ID) return;
 
 	Frame* frame = new Frame();
-	
+
+	DataType type;
+	data >> type;
+	while (type == DataType::FUNCTION_BEGIN) {
+		ReadFunctionData(data, frame->functions);
+		data >> type;
+	}
+
+	data >> frame->ms;
+
 	frames.push_back(frame);
 }
 
@@ -180,4 +189,26 @@ void ModuleProfile::ClearFrames()
 		delete* item;
 	}
 	frames.clear();
+}
+
+void ModuleProfile::ReadFunctionData(const Packet& data, std::list<Function*>& toAdd)
+{
+	std::string fileName, functionName;
+	int line;
+	
+	data.ReadString(fileName);
+	data.ReadString(functionName);
+	data >> line;
+
+	Function* function = new Function(functionName, fileName, line);
+	toAdd.push_back(function);
+
+	DataType type;
+	data >> type;
+	while (type == DataType::FUNCTION_BEGIN) {
+		ReadFunctionData(data, function->functions);
+		data >> type;
+	}
+
+	data >> function->ms;
 }

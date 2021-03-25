@@ -38,7 +38,7 @@ void Packet::Read(void* outData, size_t bytes) const
 	}
 }
 
-void Packet::Read(std::string& inString)
+void Packet::ReadString(std::string& inString) const
 {
 	int elementCount;
 	Read(elementCount);

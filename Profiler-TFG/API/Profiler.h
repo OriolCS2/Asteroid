@@ -20,12 +20,12 @@ public:
 
 	void Start()
 	{
-		start = std::chrono::steady_clock::now();
+		start = std::chrono::high_resolution_clock::now();
 	}
 
-	float ReadMs()
+	double ReadMs()
 	{
-		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
+		return  std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start).count();
 	}
 
 private:

@@ -18,7 +18,7 @@ private:
 public:
 
 	std::list<Function*> functions;
-	unsigned __int32 ms = 0;
+	double ms = 0;
 
 private:
 

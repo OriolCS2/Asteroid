@@ -1,12 +1,23 @@
 #include <stdio.h>
 #include <thread>
 #include <stdlib.h>
+#include <Windows.h>
 #include "Profiler.h"
 
 void Update() 
 {
 	PROFILER_FUNCTION();
-	std::this_thread::sleep_for(std::chrono::milliseconds(3));
+	Sleep(3);
+}
+
+void PostUpdate()
+{
+	PROFILER_FUNCTION();
+	Clock c;
+	c.Start();
+	Sleep(4);
+	double d = c.ReadMs();
+	printf(" %f", d);
 }
 
 void main()
@@ -17,9 +28,10 @@ void main()
 	{
 		PROFILER_START_FRAME();
 	
-		
+		Update();
+		PostUpdate();
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		Sleep(10);
 	}
 
 	system("pause");

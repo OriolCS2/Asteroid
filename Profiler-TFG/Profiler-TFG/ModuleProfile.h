@@ -15,6 +15,7 @@ enum class ProfileState {
 };
 
 class Frame;
+class Function;
 
 class ModuleProfile : public Module
 {
@@ -41,6 +42,8 @@ private:
 	bool HasSocketInfo(SOCKET s);
 	
 	void ClearFrames();
+
+	void ReadFunctionData(const Packet& data, std::list<Function*>& toAdd);
 
 public:
 	std::list<Frame*> frames;

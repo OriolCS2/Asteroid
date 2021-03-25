@@ -21,7 +21,7 @@ public:
 	template< typename T >
 	void Read(T& outData) const;
 
-	void Read(std::string& inString);
+	void ReadString(std::string& inString) const;
 	void Read(char* inString);
 
 	template< typename T >

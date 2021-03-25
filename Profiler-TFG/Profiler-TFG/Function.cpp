@@ -12,7 +12,7 @@ Function::~Function()
 	}
 }
 
-unsigned __int32 Function::GetSelfMs()
+double Function::GetSelfMs()
 {
 	if (functions.empty()) {
 		return ms;
@@ -25,7 +25,7 @@ unsigned __int32 Function::GetSelfMs()
 	return ms - sub_functions_ms;
 }
 
-unsigned __int32 Function::GetChildMs()
+double Function::GetChildMs()
 {
 	return sub_functions_ms;
 }

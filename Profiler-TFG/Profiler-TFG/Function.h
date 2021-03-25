@@ -10,8 +10,8 @@ public:
 	Function(const std::string& name, const std::string& file, int line);
 	~Function();
 
-	unsigned __int32 GetSelfMs();
-	unsigned __int32 GetChildMs();
+	double GetSelfMs();
+	double GetChildMs();
 
 private:
 
@@ -22,10 +22,10 @@ public:
 	std::string name;
 	std::string file;
 	int line = 0;
-	unsigned __int32 ms = 0;
+	double ms = 0;
 	std::list<Function*> functions;
 
 private:
 
-	unsigned __int32 sub_functions_ms = 0;
+	double sub_functions_ms = 0;
 };

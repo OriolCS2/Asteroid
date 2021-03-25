@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <iostream>
 
+#include <time.h>
+
 #pragma comment(lib, "ws2_32.lib")
 
 #define PROTOCOL_ID 123456789
@@ -105,7 +107,11 @@ ProfilerFrameData::ProfilerFrameData()
 ProfilerFrameData::~ProfilerFrameData()
 {
 	if (isConnected) {
-		packet->SetDouble(clock.ReadMs());
+		double ms = clock.ReadMs();
+
+		packet->SetEnum(DataType::FRAME_END);
+		packet->SetDouble(ms);
+
 		send(client, packet->GetData(), PACKET_SIZE, 0);
 
 		delete packet;
@@ -148,21 +154,25 @@ void ProfilerCleanup()
 
 ProfilerFunctionData::ProfilerFunctionData(const char* functionName, const char* fileName, int line)
 {
-	std::string file = std::filesystem::path(fileName).stem().string();
-	std::string function = functionName;
+	if (isConnected) {
+		std::string file = std::filesystem::path(fileName).stem().string();
+		std::string function = functionName;
 
-	packet->SetEnum(DataType::FUNCTION_BEGIN);
-	packet->SetString(file);
-	packet->SetString(function);
-	packet->SetInt(line);
+		packet->SetEnum(DataType::FUNCTION_BEGIN);
+		packet->SetString(file);
+		packet->SetString(function);
+		packet->SetInt(line);
 
-	clock.Start();
+		clock.Start();
+	}
 }
 
 ProfilerFunctionData::~ProfilerFunctionData()
 {
-	double ms = clock.ReadMs();
+	if (isConnected) {
+		double ms = clock.ReadMs();
 
-	packet->SetEnum(DataType::FRAME_END);
-	packet->SetDouble(ms);
+		packet->SetEnum(DataType::FUNCTION_END);
+		packet->SetDouble(ms);
+	}
 }
