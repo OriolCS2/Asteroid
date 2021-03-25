@@ -40,7 +40,7 @@ void Packet::Read(void* outData, size_t bytes) const
 
 void Packet::Read(std::string& inString)
 {
-	size_t elementCount;
+	int elementCount;
 	Read(elementCount);
 	inString.resize(elementCount);
 	for (auto& character : inString) {

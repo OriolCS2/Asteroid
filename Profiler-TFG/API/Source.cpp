@@ -5,7 +5,8 @@
 
 void Update() 
 {
-	
+	PROFILER_FUNCTION();
+	std::this_thread::sleep_for(std::chrono::milliseconds(3));
 }
 
 void main()

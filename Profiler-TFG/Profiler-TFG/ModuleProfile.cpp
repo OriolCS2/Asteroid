@@ -6,6 +6,11 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+enum class DataType {
+	FUNCTION_BEGIN = 0,
+	FUNCTION_END = 1,
+	FRAME_END = 2
+};
 
 ModuleProfile::ModuleProfile(bool start_enabled) : Module(start_enabled)
 {
@@ -146,7 +151,7 @@ void ModuleProfile::RecieveClientData()
 
 void ModuleProfile::CreateData(const Packet& data)
 {
-	double protoId;
+	int protoId;
 	data >> protoId;
 	if (protoId != PROTOCOL_ID) return;
 

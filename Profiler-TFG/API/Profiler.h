@@ -9,6 +9,8 @@
 
 #define PROFILER_START_FRAME() ProfilerFrameData profilerFrameData;
 
+#define PROFILER_FUNCTION() ProfilerFunctionData profilerFunctionData(__FUNCTION__, __FILE__, __LINE__);
+
 void ProfilerInit();
 void ProfilerCleanup();
 
@@ -35,6 +37,16 @@ class ProfilerFrameData {
 public:
 	ProfilerFrameData();
 	~ProfilerFrameData();
+
+private:
+
+	Clock clock;
+};
+
+class ProfilerFunctionData {
+public:
+	ProfilerFunctionData(const char* functionName, const char* fileName, int line);
+	~ProfilerFunctionData();
 
 private:
 

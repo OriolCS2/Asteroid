@@ -3,12 +3,21 @@
 #include <Windows.h>
 #include <WS2tcpip.h>
 #include <thread>
+#include <filesystem>
 #include <iostream>
 
 #pragma comment(lib, "ws2_32.lib")
 
-#define PROTOCOL_ID 123456789.0
+#define PROTOCOL_ID 123456789
 #define PACKET_SIZE 4000
+
+enum class DataType {
+	FUNCTION_BEGIN = 0,
+	FUNCTION_END = 1,
+	FRAME_END = 2
+};
+
+#define SetEnum(val) SetInt((int)val)
 
 class Packet {
 public:
@@ -16,7 +25,7 @@ public:
 	{
 		memset(data, '\0', PACKET_SIZE);
 		cursor = data;
-		SetDouble(PROTOCOL_ID);
+		SetInt(PROTOCOL_ID);
 	}
 
 	const char* GetData()
@@ -29,6 +38,29 @@ public:
 		size_t size = sizeof(double);
 		memcpy(cursor, &d, size);
 		cursor += size;
+	}
+
+	void SetInt(int d)
+	{
+		size_t size = sizeof(int);
+		memcpy(cursor, &d, size);
+		cursor += size;
+	}
+
+	void SetChar(char d)
+	{
+		size_t size = sizeof(char);
+		memcpy(cursor, &d, size);
+		cursor += size;
+	}
+
+	void SetString(const std::string& str)
+	{
+		SetInt(str.size());
+		
+		for (auto& character : str) {
+			SetChar(character);
+		}
 	}
 
 private:
@@ -112,4 +144,25 @@ void ProfilerCleanup()
 	if (WSACleanup() != NO_ERROR) {
 		// ERROR
 	}
+}
+
+ProfilerFunctionData::ProfilerFunctionData(const char* functionName, const char* fileName, int line)
+{
+	std::string file = std::filesystem::path(fileName).stem().string();
+	std::string function = functionName;
+
+	packet->SetEnum(DataType::FUNCTION_BEGIN);
+	packet->SetString(file);
+	packet->SetString(function);
+	packet->SetInt(line);
+
+	clock.Start();
+}
+
+ProfilerFunctionData::~ProfilerFunctionData()
+{
+	double ms = clock.ReadMs();
+
+	packet->SetEnum(DataType::FRAME_END);
+	packet->SetDouble(ms);
 }

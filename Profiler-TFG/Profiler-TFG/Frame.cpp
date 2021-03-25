@@ -14,6 +14,7 @@ Frame::~Frame()
 void Frame::GenerateFunctionsData()
 {
 	// TODO: passar per totes les funcions i ajuntar la info de totes
+	// TODO: podria fer una mapa del int string string (line, funct name, file) per saber que es igual
 }
 
 const std::list<Function*>& Frame::GetFunctionsData()
