@@ -9,7 +9,7 @@
 
 #define PROFILER_START_FRAME() ProfilerFrameData profilerFrameData;
 
-#define PROFILER_FUNCTION() ProfilerFunctionData profilerFunctionData(__FUNCTION__, __FILE__, __LINE__);
+#define PROFILER_FUNCTION() ProfilerFunctionData profilerFunctionData(__FUNCTION__, __FILE__, __LINE__, sizeof(__FUNCTION__), sizeof(__FILE__));
 
 void ProfilerInit();
 void ProfilerCleanup();
@@ -45,7 +45,7 @@ private:
 
 class ProfilerFunctionData {
 public:
-	ProfilerFunctionData(const char* functionName, const char* fileName, int line);
+	ProfilerFunctionData(const char* functionName, const char* fileName, int line, int functionSize, int fileSize);
 	~ProfilerFunctionData();
 
 private:

@@ -229,15 +229,18 @@ void ProfilerCleanup()
 	}
 }
 
-ProfilerFunctionData::ProfilerFunctionData(const char* functionName, const char* fileName, int line)
+ProfilerFunctionData::ProfilerFunctionData(const char* functionName, const char* fileName, int line, int functionSize, int fileSize)
 {
 	if (isConnected) {
-		std::string file = std::filesystem::path(fileName).stem().string();
-		std::string function = functionName;
+		//int d = sizeof(functionName);
+		//std::string file = std::filesystem::path(fileName).stem().string();
+		//std::string function = functionName;
 
 		packet->SetEnum(DataType::FUNCTION_BEGIN);
-		packet->SetString(file);
-		packet->SetString(function);
+		packet->SetInt(fileSize);
+		packet->SetChar(fileName, fileSize);
+		packet->SetInt(functionSize);
+		packet->SetChar(functionName, functionSize);
 		packet->SetInt(line);
 
 		clock.Start();
