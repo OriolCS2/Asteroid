@@ -59,21 +59,17 @@ public:
 		cursor += size;
 	}
 
-	void SetChar(char d)
+	void SetChar(const char* d, size_t s)
 	{
-		size_t size = sizeof(char);
-		UpdateSize(size);
-		memcpy(cursor, &d, size);
-		cursor += size;
+		UpdateSize(s);
+		memcpy(cursor, d, s);
+		cursor += s;
 	}
 
 	void SetString(const std::string& str)
 	{
 		SetInt(str.size());
-		
-		for (auto& character : str) {
-			SetChar(character);
-		}
+		SetChar(str.data(), str.size());
 	}
 
 	size_t GetSize() const
