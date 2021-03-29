@@ -6,12 +6,14 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+#define SOCKET_MAX_BUFFER 1048576
+
 enum class DataType {
 	FUNCTION_BEGIN = 0,
 	FUNCTION_END = 1,
 	FRAME_END = 2
 };
-
+// TOD0: borrar mmgr
 ModuleProfile::ModuleProfile(bool start_enabled) : Module(start_enabled)
 {
 }
@@ -102,10 +104,8 @@ void ModuleProfile::LookForClients()
 void ModuleProfile::RecieveClientData()
 {
 	while (HasSocketInfo(client)) {
-		int saveSize = sizeof(int) * 2;
-		char* data = new char[saveSize];
-
-		int bytes = recv(client, data, saveSize, 0);
+		char* data = new char[SOCKET_MAX_BUFFER];
+		int bytes = recv(client, data, SOCKET_MAX_BUFFER, 0);
 
 		if (bytes == SOCKET_ERROR || bytes == ECONNRESET || bytes == 0) {
 			DisconnectClient();
@@ -120,16 +120,16 @@ void ModuleProfile::RecieveClientData()
 				delete[] data;
 				break;
 			}
-
+			// TODO: he de fer que si arriba un paquet amb el value > SOCKET_MAX_BUFFER, la proxima vegada que llegeixi que llegeixi value - SOCKET_MAX_BUFFER i faci append al que havia llegit abans
 			memcpy(&value, (data + sizeof(int)), sizeof(int));
 			delete[] data;
 
-			Packet packet = Packet(value);
-			bytes = recv(client, packet.GetBufferPtr(), packet.GetCapacity(), 0);
-			
-			if (bytes == value - saveSize) {
-				CreateData(packet);
-			}
+			//Packet packet = Packet(value);
+			//bytes = recv(client, packet.GetBufferPtr(), packet.GetCapacity(), 0);
+			//
+			//if (bytes == value - SOCKET_MAX_BUFFER) {
+			//	CreateData(packet);
+			//}
 		}
 	}
 }

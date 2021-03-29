@@ -10,8 +10,9 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+#define SOCKET_MAX_BUFFER 1048576
 #define PROTOCOL_ID 123456789
-#define PACKET_SIZE 32768
+#define PACKET_SIZE 262144
 
 enum class DataType {
 	FUNCTION_BEGIN = 0,
@@ -25,6 +26,7 @@ class Packet {
 public:
 	Packet()
 	{
+		// TODO: no crear i borrar data a cada frame, reciclar el buffer!
 		data = new char[maxSize];
 		memset(data, '\0', maxSize);
 		cursor = data;
@@ -184,7 +186,16 @@ ProfilerFrameData::~ProfilerFrameData()
 
 		packet->WriteCurrentSize();
 
-		send(client, packet->GetData(), packet->GetSize(), 0);
+		char* data = (char*)packet->GetData();
+		size_t size = packet->GetSize();
+		size_t dataSend = 0U;
+		while (dataSend != size) {
+			size_t toSend = size - dataSend > SOCKET_MAX_BUFFER ? SOCKET_MAX_BUFFER : size - dataSend;
+			dataSend += toSend;
+
+			send(client, data, toSend, 0);
+			data += toSend;
+		}
 
 		delete packet;
 		packet = nullptr;
@@ -232,10 +243,6 @@ void ProfilerCleanup()
 ProfilerFunctionData::ProfilerFunctionData(const char* functionName, const char* fileName, int line, int functionSize, int fileSize)
 {
 	if (isConnected) {
-		//int d = sizeof(functionName);
-		//std::string file = std::filesystem::path(fileName).stem().string();
-		//std::string function = functionName;
-
 		packet->SetEnum(DataType::FUNCTION_BEGIN);
 		packet->SetInt(fileSize);
 		packet->SetChar(fileName, fileSize);
