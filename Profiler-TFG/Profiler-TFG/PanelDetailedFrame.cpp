@@ -16,12 +16,12 @@ PanelDetailedFrame::~PanelDetailedFrame()
 
 void PanelDetailedFrame::PanelLogic()
 {
-	float mouseZ = App->input->GetMouseZ();
-	if (mouseZ != 0.0F) {
-		scale = Clamp(scale + mouseZ * 0.5F, 1.0F, 10.0F);
-	}
-
 	ImGui::Begin(panel_name.data(), 0, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_HorizontalScrollbar);
+
+	float mouseZ = App->input->GetMouseZ();
+	if (mouseZ != 0.0F && ImGui::IsWindowHovered()) {
+		scale = max(1.0F, (scale + mouseZ * sqrt(scale)));
+	}
 
 	Frame* frame = App->ui->panel_frames->frame;
 	if (frame != nullptr && !frame->functions.empty()) {

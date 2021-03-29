@@ -56,10 +56,12 @@ void PanelSectionTree::ShowFunctionTree(Function* function)
 	ImGui::SameLine();
 	ImGui::SetCursorScreenPos(cursorScreenPos);
 
+	ImGui::PushID(&function->line);
 	if (ImGui::TreeNodeEx(("                    " + function->name).data(), ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth | (isLeaf ? ImGuiTreeNodeFlags_Leaf : 0))) {
 		for (auto item = function->functions.begin(); item != function->functions.end(); ++item) {
 			ShowFunctionTree(*item);
 		}
 		ImGui::TreePop();
 	}
+	ImGui::PopID();
 }

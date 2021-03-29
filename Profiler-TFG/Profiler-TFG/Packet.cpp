@@ -8,6 +8,14 @@ Packet::Packet(size_t size)
 	this->size = 0;
 }
 
+Packet::Packet(const std::string& d)
+{
+	buffer = new char[d.size()];
+	cursor = buffer;
+	capacity = d.size();
+	this->size = 0;
+}
+
 Packet::~Packet()
 {
 	delete[] buffer;
@@ -31,10 +39,13 @@ char* Packet::GetBufferPtr() const
 void Packet::Read(void* outData, size_t bytes) const
 {
 	size_t nextSize = size + bytes;
-	if (nextSize < capacity) {
+	if (nextSize <= capacity) {
 		memcpy(outData, cursor, bytes);
 		cursor += bytes;
 		size = nextSize;
+	}
+	else {
+		int u = 0;
 	}
 }
 
