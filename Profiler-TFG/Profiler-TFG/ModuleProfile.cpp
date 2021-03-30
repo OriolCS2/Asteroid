@@ -104,8 +104,8 @@ void ModuleProfile::LookForClients()
 void ModuleProfile::RecieveClientData()
 {
 	while (HasSocketInfo(client)) {
-		char* data = new char[SOCKET_MAX_BUFFER];
-		int bytes = recv(client, data, SOCKET_MAX_BUFFER, 0);
+		char* data = new char[sizeof(int) * 2];
+		int bytes = recv(client, data, sizeof(int) * 2, 0);
 
 		if (bytes == SOCKET_ERROR || bytes == ECONNRESET || bytes == 0) {
 			DisconnectClient();
@@ -117,19 +117,26 @@ void ModuleProfile::RecieveClientData()
 			memcpy(&value, data, sizeof(int));
 
 			if (value != PROTOCOL_ID) {
-				delete[] data;
+ 				delete[] data;
 				break;
 			}
-			// TODO: he de fer que si arriba un paquet amb el value > SOCKET_MAX_BUFFER, la proxima vegada que llegeixi que llegeixi value - SOCKET_MAX_BUFFER i faci append al que havia llegit abans
-			memcpy(&value, (data + sizeof(int)), sizeof(int));
-			delete[] data;
 
-			//Packet packet = Packet(value);
-			//bytes = recv(client, packet.GetBufferPtr(), packet.GetCapacity(), 0);
-			//
-			//if (bytes == value - SOCKET_MAX_BUFFER) {
-			//	CreateData(packet);
-			//}
+			memcpy(&value, (data + sizeof(int)), sizeof(int));
+			value -= sizeof(int) * 2;
+			delete[] data;
+			data = new char[value];
+
+			int bytesRead = 0;
+			while (bytesRead != value) {
+				int toRead = value - bytesRead > SOCKET_MAX_BUFFER ? SOCKET_MAX_BUFFER : value - bytesRead;
+				if (toRead == SOCKET_MAX_BUFFER) {
+					int fg = 0;
+				}
+				int b = recv(client, data + bytesRead, toRead, 0);
+				bytesRead += toRead;
+			}
+			// TODO: fer que un thread vagi llegint la info
+			framesData.push_back(data);
 		}
 	}
 }

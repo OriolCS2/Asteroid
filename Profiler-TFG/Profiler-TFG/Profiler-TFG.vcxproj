@@ -209,8 +209,6 @@
     <ClInclude Include="MathGeoLib\include\Math\sse_mathfun.h" />
     <ClInclude Include="MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
-    <ClInclude Include="mmgr\mmgr.h" />
-    <ClInclude Include="mmgr\nommgr.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleProfile.h" />
@@ -355,7 +353,6 @@
     <ClCompile Include="MathGeoLib\include\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
-    <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleProfile.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
@@ -380,9 +377,6 @@
     <None Include="SDL\include\SDL_config.h.cmake" />
     <None Include="SDL\include\SDL_config.h.in" />
     <None Include="SDL\include\SDL_config_macosx.h.orig" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="mmgr\readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

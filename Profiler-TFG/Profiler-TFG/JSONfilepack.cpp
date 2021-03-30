@@ -1,7 +1,6 @@
 #include "JSONfilepack.h"
 #include "Parson/parson.h"
 #include <stack>
-#include "mmgr/mmgr.h"
 
 JSONfilepack::JSONfilepack(const std::string& path, JSON_Object*& object, JSON_Value*& value) : JSONparser()
 {

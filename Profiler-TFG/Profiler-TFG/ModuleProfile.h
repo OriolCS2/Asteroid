@@ -46,6 +46,7 @@ private:
 	void ReadFunctionData(const Packet& data, std::list<Function*>& toAdd);
 
 public:
+	std::list<char*> framesData;
 	std::list<Frame*> frames;
 	ProfileState state = ProfileState::NONE;
 

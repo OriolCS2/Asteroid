@@ -6,7 +6,6 @@
 #include "ModuleWindow.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/MathGeoLib.h"
-#include "mmgr/mmgr.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */

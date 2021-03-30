@@ -20,7 +20,6 @@
 #include "PanelFrames.h"
 #include <fstream>
 #include "IconFontCppHeaders/IconsFontAwesome5.h"
-#include "mmgr/mmgr.h"
 #include <ctime>
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -148,7 +147,7 @@ void ModuleUI::Draw()
 		ImGui::PopStyleVar();
 		ImGui::Spacing();
 		ImGui::SetCursorPosX(13);
-		ImGui::Text("Frames: %i", App->profile->frames.size());
+		ImGui::Text("Frames: %i", App->profile->framesData.size());
 		ImGui::End();
 		break; }
 	case ProfileState::INFO: {

@@ -20,9 +20,6 @@
     <Filter Include="Tools\Maths">
       <UniqueIdentifier>{571ffcd0-4c35-4d87-8558-99c0afef8b7f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\Mmgr">
-      <UniqueIdentifier>{7cd9b448-3c05-484a-ac48-dc0d436218c2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\Parson">
       <UniqueIdentifier>{4c19f222-070d-49b2-bf99-8b0edf8629da}</UniqueIdentifier>
     </Filter>
@@ -270,12 +267,6 @@
     </ClInclude>
     <ClInclude Include="MathGeoLib\include\Time\Clock.h">
       <Filter>Tools\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="mmgr\mmgr.h">
-      <Filter>Tools\Mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="mmgr\nommgr.h">
-      <Filter>Tools\Mmgr</Filter>
     </ClInclude>
     <ClInclude Include="Parson\parson.h">
       <Filter>Tools\Parson</Filter>
@@ -714,9 +705,6 @@
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp">
       <Filter>Tools\Maths</Filter>
     </ClCompile>
-    <ClCompile Include="mmgr\mmgr.cpp">
-      <Filter>Tools\Mmgr</Filter>
-    </ClCompile>
     <ClCompile Include="Parson\parson.c">
       <Filter>Tools\Parson</Filter>
     </ClCompile>
@@ -776,10 +764,5 @@
     <None Include="SDL\include\SDL_config_macosx.h.orig">
       <Filter>Tools\SDL</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="mmgr\readme.txt">
-      <Filter>Tools\Mmgr</Filter>
-    </Text>
   </ItemGroup>
 </Project>
