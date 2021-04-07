@@ -15,7 +15,7 @@
 #include "Coin.h"
 #include "Bat.h"
 
-#include "..\..\Profiler.h"
+#include "..\..\Asteroid.h"
 
 EntityManager::EntityManager()
 {

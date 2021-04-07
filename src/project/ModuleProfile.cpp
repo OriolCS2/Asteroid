@@ -9,17 +9,26 @@
 #define SOCKET_MAX_BUFFER 1048576
 
 enum class DataType {
-	FUNCTION_BEGIN = 0,
-	FUNCTION_END = 1,
-	FRAME_END = 2
+	FUNCTION_BEGIN = 1,
+	FUNCTION_END = 2,
+	FRAME_END = 3
 };
-// TOD0: borrar mmgr
+
 ModuleProfile::ModuleProfile(bool start_enabled) : Module(start_enabled)
 {
 }
 
 ModuleProfile::~ModuleProfile()
 {
+	if (state == ProfileState::WAITING_INFO) {
+		DisconnectClient();
+	}
+
+	for (auto item = framesData.begin(); item != framesData.end(); ++item) {
+		delete* item;
+	}
+
+	ClearFrames();
 }
 
 bool ModuleProfile::Start()
@@ -74,8 +83,14 @@ void ModuleProfile::ConnectClient()
 
 void ModuleProfile::DisconnectClient()
 {
+	{
+		std::unique_lock<std::mutex> lock(mtx);
+		exitThreadFlag = true;
+		event.notify_one();
+	}
+	parseThread.join();
 	state = ProfileState::INFO;
-	
+
 	closesocket(server);
 	closesocket(client);
 }
@@ -89,6 +104,38 @@ void ModuleProfile::ResetInfo()
 	}
 }
 
+void ModuleProfile::ParseData()
+{
+	while (true) {
+
+		Packet* data = nullptr;
+		{
+			std::unique_lock<std::mutex> lock(mtx);
+			if (exitThreadFlag) {
+				exitThreadFlag = false;
+				break;
+			}
+
+			if (!framesData.empty()) {
+				data = framesData.front();
+				framesData.pop_front();
+			}
+			else {
+				if (exitThreadFlag) {
+					exitThreadFlag = false;
+					break;
+				}
+				event.wait(lock);
+			}
+		}
+
+		if (data != nullptr) {
+			CreateData(*data);
+			delete data;
+		}
+	}
+}
+
 void ModuleProfile::LookForClients()
 {
 	if (HasSocketInfo(server)) {
@@ -96,6 +143,8 @@ void ModuleProfile::LookForClients()
 		int clientSize = sizeof(clientAddr);
 		client = accept(server, (sockaddr*)&clientAddr, &clientSize);
 		if (client != INVALID_SOCKET && client != SOCKET_ERROR) {
+			parseThread = std::thread(&ModuleProfile::ParseData, this);
+			framesCount = 0;
 			state = ProfileState::WAITING_INFO; // TODO: fer que en el connecting surti el simbol de la rodona girant que tinc el loading de imgui widget al trello
 		}
 	}
@@ -124,19 +173,24 @@ void ModuleProfile::RecieveClientData()
 			memcpy(&value, (data + sizeof(int)), sizeof(int));
 			value -= sizeof(int) * 2;
 			delete[] data;
-			data = new char[value];
+			char* frameData = new char[value];
 
 			int bytesRead = 0;
 			while (bytesRead != value) {
 				int toRead = value - bytesRead > SOCKET_MAX_BUFFER ? SOCKET_MAX_BUFFER : value - bytesRead;
-				if (toRead == SOCKET_MAX_BUFFER) {
-					int fg = 0;
-				}
-				int b = recv(client, data + bytesRead, toRead, 0);
+				char* cursor = frameData + bytesRead;
+				bytes = recv(client, cursor, toRead, 0);
+
 				bytesRead += toRead;
 			}
-			// TODO: fer que un thread vagi llegint la info
-			framesData.push_back(data);
+
+			++framesCount;
+			Packet* packet = new Packet(frameData, value);
+			{
+				std::unique_lock<std::mutex> lock(mtx);
+				framesData.push_back(packet);
+				event.notify_one();
+			}
 		}
 	}
 }
@@ -153,7 +207,7 @@ void ModuleProfile::CreateData(const Packet& data)
 	}
 
 	data >> frame->ms;
-
+	
 	frames.push_back(frame);
 }
 

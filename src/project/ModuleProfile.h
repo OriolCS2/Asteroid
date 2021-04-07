@@ -4,6 +4,8 @@
 #include <list>
 
 #include "Packet.h"
+#include <thread>
+#include <mutex>
 
 #define PROTOCOL_ID 123456789
 
@@ -35,6 +37,8 @@ public:
 
 private:
 
+	void ParseData();
+
 	void LookForClients();
 	void RecieveClientData();
 	void CreateData(const Packet& data);
@@ -46,11 +50,17 @@ private:
 	void ReadFunctionData(const Packet& data, std::list<Function*>& toAdd);
 
 public:
-	std::list<char*> framesData;
+	int framesCount = 0;
+	std::list<Packet*> framesData;
 	std::list<Frame*> frames;
 	ProfileState state = ProfileState::NONE;
 
 private:
+
+	bool exitThreadFlag = false;
+	std::condition_variable event;
+	std::mutex mtx;
+	std::thread parseThread;
 
 	SOCKET server;
 	SOCKET client;

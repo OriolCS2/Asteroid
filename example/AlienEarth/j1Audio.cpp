@@ -8,7 +8,7 @@
 #include "SDL_mixer\include\SDL_mixer.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
-#include "..\..\Profiler.h"
+#include "..\..\Asteroid.h"
 
 j1Audio::j1Audio() : j1Module()
 {

@@ -22,7 +22,7 @@
 #include "j1Fonts.h"
 #include "p2Point.h"
 
-#include "..\..\Profiler.h"
+#include "..\..\Asteroid.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)

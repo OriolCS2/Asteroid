@@ -22,7 +22,7 @@
 #include "Slider.h"
 #include "j1FadeToBlack.h"
 
-#include "..\..\Profiler.h"
+#include "..\..\Asteroid.h"
 
 j1Scene::j1Scene() : j1Module()
 {

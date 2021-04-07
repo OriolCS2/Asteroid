@@ -16,6 +16,15 @@ Packet::Packet(const std::string& d)
 	this->size = 0;
 }
 
+Packet::Packet(char* d, size_t size)
+{
+	buffer = d;
+	memcpy(buffer, d, size);
+	cursor = buffer;
+	capacity = size;
+	this->size = 0;
+}
+
 Packet::~Packet()
 {
 	delete[] buffer;

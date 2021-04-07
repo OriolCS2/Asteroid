@@ -5,7 +5,7 @@
 #include "j1Window.h"
 #include "SDL/include/SDL.h"
 
-#include "..\..\Profiler.h"
+#include "..\..\Asteroid.h"
 
 #define MAX_KEYS 300
 

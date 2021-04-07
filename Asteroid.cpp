@@ -15,9 +15,9 @@
 #define PACKET_SIZE 262144
 
 enum class DataType {
-	FUNCTION_BEGIN = 0,
-	FUNCTION_END = 1,
-	FRAME_END = 2
+	FUNCTION_BEGIN = 1,
+	FUNCTION_END = 2,
+	FRAME_END = 3
 };
 
 #define SetEnum(val) SetInt((int)val)
@@ -185,6 +185,15 @@ ProfilerFrameData::~ProfilerFrameData()
 		packet->SetDouble(ms);
 
 		packet->WriteCurrentSize();
+
+		int val;
+		memcpy(&val, packet->GetData(), sizeof(int));
+
+		int val2;
+		memcpy(&val2, packet->GetData() + sizeof(int), sizeof(int));
+
+		DataType val3;
+		memcpy(&val3, packet->GetData() + sizeof(int) * 2, sizeof(int));
 
 		char* data = (char*)packet->GetData();
 		size_t size = packet->GetSize();

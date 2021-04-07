@@ -8,7 +8,7 @@
 #include "j1PerfTimer.h"
 #include "EntityManager.h"
 #include "Player.h"
-#include "..\..\Profiler.h"
+#include "..\..\Asteroid.h"
 #include "j1Pathfinding.h"
 #include "j1Map.h"
 #include "j1Audio.h"
