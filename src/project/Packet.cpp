@@ -21,12 +21,12 @@ Packet::~Packet()
 	delete[] buffer;
 }
 
-uint Packet::GetCapacity() const
+size_t Packet::GetCapacity() const
 {
 	return capacity;
 }
 
-uint Packet::GetSize() const
+size_t Packet::GetSize() const
 {
 	return size;
 }
