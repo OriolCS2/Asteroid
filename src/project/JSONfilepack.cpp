@@ -1,10 +1,16 @@
 #include "JSONfilepack.h"
-#include "Parson/parson.h"
+#include "Color.h"
 #include <stack>
 
 JSONfilepack::JSONfilepack(const std::string& path, JSON_Object*& object, JSON_Value*& value) : JSONparser()
 {
 	this->path = path;
+	this->object = object;
+	this->value = value;
+}
+
+JSONfilepack::JSONfilepack(JSON_Object*& object, JSON_Value*& value) : JSONparser()
+{
 	this->object = object;
 	this->value = value;
 }
@@ -64,18 +70,7 @@ double JSONparser::GetNumber(const std::string& name, double def)
 	return (json_value_get_type(val) == JSONNumber) ? json_value_get_number_unsafe(val) : def;
 }
 
-void JSONparser::SetBoolean(const std::string& name, bool boolean)
-{
-	json_object_dotset_boolean(object, name.data(), boolean);
-}
-
-bool JSONparser::GetBoolean(const std::string& name, bool def)
-{
-	JSON_Value* val = json_object_dotget_value(object, name.data());
-	return (json_value_get_type(val) == JSONBoolean) ? json_value_get_boolean_unsafe(val) : def;
-}
-
-void JSONparser::SetFloat3(const std::string& name, const float3& numbers)
+void JSONparser::SetColor(const std::string& name, const Color& color)
 {
 	JSON_Array* arr = json_object_dotget_array(object, name.data());
 	if (arr == nullptr) {
@@ -86,85 +81,23 @@ void JSONparser::SetFloat3(const std::string& name, const float3& numbers)
 	else {
 		json_array_clear(arr);
 	}
-	json_array_append_number(arr, numbers.x);
-	json_array_append_number(arr, numbers.y);
-	json_array_append_number(arr, numbers.z);
+	json_array_append_number(arr, color.r);
+	json_array_append_number(arr, color.g);
+	json_array_append_number(arr, color.b);
+	json_array_append_number(arr, color.a);
 }
 
-float3 JSONparser::GetFloat3(const std::string& name, float3 def)
+Color JSONparser::GetColor(const std::string& name, Color def)
 {
 	JSON_Value* val = json_object_dotget_value(object, name.data());
 	if (json_value_get_type(val) == JSONArray) {
 		JSON_Array* arr = json_value_get_array_unsafe(val);
-		float3 numbers = float3::zero;
-		numbers.x = json_array_get_number(arr, 0);
-		numbers.y = json_array_get_number(arr, 1);
-		numbers.z = json_array_get_number(arr, 2);
-		return numbers;
-	}
-	else {
-		return def;
-	}
-}
-
-void JSONparser::SetFloat2(const std::string& name, const float2& numbers)
-{
-	JSON_Array* arr = json_object_dotget_array(object, name.data());
-	if (arr == nullptr) {
-		JSON_Value* new_val = json_value_init_array();
-		arr = json_value_get_array(new_val);
-		json_object_dotset_value(object, name.data(), new_val);
-	}
-	else {
-		json_array_clear(arr);
-	}
-	json_array_append_number(arr, numbers.x);
-	json_array_append_number(arr, numbers.y);
-}
-
-float2 JSONparser::GetFloat2(const std::string& name, float2 def)
-{
-	JSON_Value* val = json_object_dotget_value(object, name.data());
-	if (json_value_get_type(val) == JSONArray) {
-		JSON_Array* arr = json_value_get_array_unsafe(val);
-		float2 numbers = float2::zero;
-		numbers.x = json_array_get_number(arr, 0);
-		numbers.y = json_array_get_number(arr, 1);
-		return numbers;
-	}
-	else {
-		return def;
-	}
-}
-
-void JSONparser::SetQuat(const std::string& name, const Quat& numbers)
-{
-	JSON_Array* arr = json_object_dotget_array(object, name.data());
-	if (arr == nullptr) {
-		JSON_Value* new_val = json_value_init_array();
-		arr = json_value_get_array(new_val);
-		json_object_dotset_value(object, name.data(), new_val);
-	}
-	else {
-		json_array_clear(arr);
-	}
-	json_array_append_number(arr, numbers.x);
-	json_array_append_number(arr, numbers.y);
-	json_array_append_number(arr, numbers.z);
-	json_array_append_number(arr, numbers.w);
-}
-
-Quat JSONparser::GetQuat(const std::string& name, Quat def)
-{
-	JSON_Value* val = json_object_dotget_value(object, name.data());
-	if (json_value_get_type(val) == JSONArray) {
-		JSON_Array* arr = json_value_get_array_unsafe(val);
-		Quat quat;
-		quat.x = json_array_get_number(arr, 0);
-		quat.y = json_array_get_number(arr, 1);
-		quat.z = json_array_get_number(arr, 2);
-		quat.w = json_array_get_number(arr, 3);
-		return quat;
+		Color color;
+		color.r = json_array_get_number(arr, 0);
+		color.g = json_array_get_number(arr, 1);
+		color.b = json_array_get_number(arr, 2);
+		color.a = json_array_get_number(arr, 3);
+		return color;
 	}
 	else {
 		return def;
@@ -294,7 +227,7 @@ void JSONArraypack::ClearArrays()
 	json_array_clear(arr);
 }
 
-JSONfilepack* JSONfilepack::CreateJSON(const char* path)
+JSONfilepack* JSONparser::CreateJSON(const char* path)
 {
 	JSON_Value* value = json_value_init_object();
 	JSON_Object* json_object = json_value_get_object(value);
@@ -308,7 +241,7 @@ JSONfilepack* JSONfilepack::CreateJSON(const char* path)
 	return new JSONfilepack(path, json_object, value);
 }
 
-JSONfilepack* JSONfilepack::GetJSON(const char* path)
+JSONfilepack* JSONparser::GetJSON(const char* path)
 {
 	JSON_Value* value = json_parse_file(path);
 	JSON_Object* object = json_value_get_object(value);
@@ -320,8 +253,7 @@ JSONfilepack* JSONfilepack::GetJSON(const char* path)
 	return new JSONfilepack(path, object, value);
 }
 
-void JSONfilepack::FreeJSON(JSONfilepack* Jsonpack)
+void JSONparser::FreeJSON(JSONfilepack* Jsonpack)
 {
 	delete Jsonpack;
-	Jsonpack = nullptr;
 }

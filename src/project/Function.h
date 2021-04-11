@@ -8,6 +8,7 @@
 class Function {
 public:
 	Function(const std::string& name, const std::string& file, int line);
+	Function() {}
 	~Function();
 
 	double GetSelfMs();

@@ -1,8 +1,10 @@
 #include "ModuleProfile.h"
 #include "Application.h"
 #include "ModuleUI.h"
+#include "JSONfilepack.h"
 #include "Function.h"
 #include "Frame.h"
+#include <stack>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -106,12 +108,97 @@ void ModuleProfile::ResetInfo()
 
 void ModuleProfile::SaveCurrentDataToFile(const std::string& file)
 {
-	
+	JSONfilepack* json = JSONparser::CreateJSON(file.data());
+
+	json->StartSave();
+
+	JSONArraypack* framesArray = json->InitNewArray("Frames");
+
+	for (auto item = frames.begin(); item != frames.end(); ++item) {
+		framesArray->SetAnotherNode();
+		framesArray->SetNumber("ms", (*item)->ms);
+
+		if (!(*item)->functions.empty()) {
+			JSONArraypack* functionsArray = framesArray->InitNewArray("Functions");
+			for (auto it = (*item)->functions.begin(); it != (*item)->functions.end(); ++it) {
+				functionsArray->SetAnotherNode();
+				SaveFunction(*it, functionsArray);
+			}
+		}
+	}
+
+	json->FinishSave();
+
+	JSONparser::FreeJSON(json);
 }
 
 void ModuleProfile::LoadFile(const std::string& file)
 {
-	
+	ClearFrames();
+
+	JSONfilepack* json = JSONparser::GetJSON(file.data());
+
+	JSONArraypack* framesArray = json->GetArray("Frames");
+	if (framesArray != nullptr) {
+		for (int i = 0; i < framesArray->GetArraySize(); ++i) {
+			Frame* frame = new Frame();
+			frames.push_back(frame);
+
+			frame->ms = framesArray->GetNumber("ms");
+			JSONArraypack* functionsArray = framesArray->GetArray("Functions");
+			if (functionsArray != nullptr) {
+				for (int j = 0; j < functionsArray->GetArraySize(); ++j) {
+					Function* function = new Function();
+					frame->functions.push_back(function);
+
+					LoadFunction(function, functionsArray);
+
+					functionsArray->GetAnotherNode();
+				}
+			}
+
+
+			framesArray->GetAnotherNode();
+		}
+	}
+
+	JSONparser::FreeJSON(json);
+
+	state = ProfileState::INFO;
+}
+
+void ModuleProfile::SaveFunction(Function* function, JSONArraypack* to_save)
+{
+	to_save->SetNumber("ms", function->ms);
+	to_save->SetNumber("line", function->line);
+	to_save->SetString("file", function->file);
+	to_save->SetString("name", function->name);
+
+	JSONArraypack* functionsArray = to_save->InitNewArray("Functions");
+	for (auto it = function->functions.begin(); it != function->functions.end(); ++it) {
+		functionsArray->SetAnotherNode();
+		SaveFunction(*it, functionsArray);
+	}
+}
+
+void ModuleProfile::LoadFunction(Function* function, JSONArraypack* to_load)
+{
+	function->ms = to_load->GetNumber("ms");
+	function->line = to_load->GetNumber("line");
+	function->file = to_load->GetString("file");
+	function->name = to_load->GetString("name");
+
+	JSONArraypack* functionsArray = to_load->GetArray("Functions");
+	if (functionsArray != nullptr) {
+		for (int j = 0; j < functionsArray->GetArraySize(); ++j) {
+			Function* f = new Function();
+			function->functions.push_back(f);
+
+			LoadFunction(f, functionsArray);
+
+			functionsArray->GetAnotherNode();
+		}
+	}
 }
 
 void ModuleProfile::ParseData()

@@ -30,7 +30,7 @@ void PanelSectionTree::PanelLogic()
 void PanelSectionTree::ShowFunctionTree(Function* function)
 {
 	static float itemBoxSpacingX = 23;
-	static float boxSize = 130;
+	static float boxSize = 135;
 
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4, 2.5F));
 	ImGui::AlignTextToFramePadding();
@@ -47,12 +47,12 @@ void PanelSectionTree::ShowFunctionTree(Function* function)
 		ImGui::GetWindowDrawList()->AddRectFilled(cursorScreenPos + ImVec2(itemBoxSpacingX, 0), cursorScreenPos + ImVec2(childSize + itemBoxSpacingX, 18), ImGui::GetColorU32(ImVec4(0.7, 0, 0, 1)));
 		ImGui::GetWindowDrawList()->AddRectFilled(cursorScreenPos + ImVec2(childSize + itemBoxSpacingX, 0), cursorScreenPos + ImVec2(childSize + itemBoxSpacingX + boxSize -childSize, 18), ImGui::GetColorU32(ImVec4(0, 0.7, 0, 1)));
 	
-		ImGui::Text(("    " + std::to_string(function->GetChildMs())).data());
+		ImGui::Text(("    " + std::string(std::to_string(function->GetChildMs()).data(), 7)).data());
 		ImGui::SameLine();
 		ImGui::SetCursorScreenPos(cursorScreenPos);
 	}
-
-	ImGui::Text(("                   " + std::to_string(function->GetSelfMs())).data());
+	
+	ImGui::Text(("               " + std::string(std::to_string(function->GetSelfMs()).data(), 7)).data());
 	ImGui::SameLine();
 	ImGui::SetCursorScreenPos(cursorScreenPos);
 

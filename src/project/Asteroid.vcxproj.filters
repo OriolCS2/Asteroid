@@ -559,6 +559,9 @@
     <ClInclude Include="Packet.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -733,6 +736,9 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="Packet.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>

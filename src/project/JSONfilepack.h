@@ -2,11 +2,15 @@
 
 #include <string>
 #include "MathGeoLib/include/MathGeoLib.h"
+#include "SDL/include/SDL_scancode.h"
+#include "Color.h"
+#include "Parson/parson.h"
 
 typedef unsigned int uint;
 typedef struct json_object_t JSON_Object;
 typedef struct json_array_t  JSON_Array;
 typedef struct json_value_t  JSON_Value;
+
 
 class JSONfilepack;
 class JSONArraypack;
@@ -19,20 +23,15 @@ public:
 	JSONparser() {}
 	virtual ~JSONparser() {}
 
+	static JSONfilepack* CreateJSON(const char* path);
+	static JSONfilepack* GetJSON(const char* path);
+	static void FreeJSON(JSONfilepack* Jsonpack);
+
 	void SetNumber(const std::string& name, double number);
 	double GetNumber(const std::string& name, double def = 0);
 
-	void SetBoolean(const std::string& name, bool boolean);
-	bool GetBoolean(const std::string& name, bool def = false);
-
-	void SetFloat3(const std::string& name, const float3& numbers);
-	float3 GetFloat3(const std::string& name, float3 def = float3::zero);
-
-	void SetFloat2(const std::string& name, const float2& numbers);
-	float2 GetFloat2(const std::string& name, float2 def = float2::zero);
-
-	void SetQuat(const std::string& name, const Quat& numbers);
-	Quat GetQuat(const std::string& name, Quat def = Quat::identity);
+	void SetColor(const std::string& name, const Color& color);
+	Color GetColor(const std::string& name, Color def = Color::white);
 
 	void SetString(const std::string& name, const std::string& string_parameter);
 	const char* GetString(const std::string& name, const char* def = "Default");
@@ -56,11 +55,8 @@ class JSONfilepack : public JSONparser {
 public:
 
 	JSONfilepack(const std::string& path, JSON_Object*& object, JSON_Value*& value);
+	JSONfilepack(JSON_Object*& object, JSON_Value*& value);
 	~JSONfilepack();
-
-	static JSONfilepack* CreateJSON(const char* path);
-	static JSONfilepack* GetJSON(const char* path);
-	static void FreeJSON(JSONfilepack* Jsonpack);
 
 	void StartSave();
 	void FinishSave();

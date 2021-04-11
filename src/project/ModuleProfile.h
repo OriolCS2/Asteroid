@@ -16,6 +16,7 @@ enum class ProfileState {
 	INFO
 };
 
+class JSONArraypack;
 class Frame;
 class Function;
 
@@ -39,6 +40,9 @@ public:
 	void LoadFile(const std::string& file);
 
 private:
+
+	void SaveFunction(Function* function, JSONArraypack* to_save);
+	void LoadFunction(Function* function, JSONArraypack* to_load);
 
 	void ParseData();
 
