@@ -46,6 +46,8 @@ public:
 	void MainMenuBar();
 	void Draw();
 
+	void NormalizePath(std::string& path);
+
 	void ChangeEnableDemo();
 
 	ImFont* GetFont(Font font);
@@ -56,6 +58,9 @@ public:
 	void OnFunctionSelected(Function* function);
 
 private:
+
+	void LoadAsteroid();
+	void SaveAsteroid();
 
 	void UpdatePanels();
 

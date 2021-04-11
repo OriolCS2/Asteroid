@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_internal.h"
+#include <filesystem>
 #include "ModuleProfile.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include <gl/GL.h>
@@ -25,6 +26,9 @@
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 #pragma comment (lib, "glew/glew32.lib") 
+
+#define ASTEROID_NO_DOT_EXTENSION "asteroid"
+#define ASTEROID_EXTENSION ".asteroid"
 
 ModuleUI::ModuleUI(bool start_enabled) : Module(start_enabled)
 {
@@ -215,16 +219,25 @@ void ModuleUI::Draw()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+void ModuleUI::NormalizePath(std::string& path)
+{
+	for (auto it = path.begin(); it != path.end(); ++it) {
+		if (*it == '\\') {
+			*it = '/';
+		}
+	}
+}
+
 void ModuleUI::MainMenuBar()
 {
 	ImGui::BeginMainMenuBar();
 	
 	if (ImGui::BeginMenu("File")) {
 		if (ImGui::MenuItem("Load", nullptr, nullptr, App->profile->state == ProfileState::INFO || App->profile->state == ProfileState::NONE)) {
-			
+			LoadAsteroid();
 		}
 		if (ImGui::MenuItem("Save", nullptr, nullptr, App->profile->state == ProfileState::INFO)) {
-			
+			SaveAsteroid();
 		}
 		ImGui::Separator();
 		if (ImGui::MenuItem("Clear", nullptr, nullptr, App->profile->state == ProfileState::INFO)) {
@@ -244,6 +257,87 @@ void ModuleUI::MainMenuBar()
 void ModuleUI::ChangeEnableDemo()
 {
 	show_demo_window = !show_demo_window;
+}
+
+void ModuleUI::LoadAsteroid()
+{
+	OPENFILENAME to_load;
+
+	static char filename[MAX_PATH];
+
+	static char curr_dir[MAX_PATH];
+	GetCurrentDirectoryA(MAX_PATH, curr_dir);
+
+	std::string filter = std::string(std::string(ASTEROID_NO_DOT_EXTENSION) + '\0' + "*" + ASTEROID_EXTENSION + '\0');
+	std::string title = std::string("Load " + std::string(ASTEROID_EXTENSION) + '\0');
+
+	ZeroMemory(&filename, sizeof(filename));
+	ZeroMemory(&to_load, sizeof(to_load));
+
+	to_load.lStructSize = sizeof(to_load);
+	to_load.hwndOwner = NULL;
+	to_load.lpstrFilter = filter.data();
+	to_load.lpstrFile = filename;
+	to_load.nMaxFile = MAX_PATH;
+	to_load.lpstrTitle = title.data();
+	to_load.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_EXPLORER;
+	if (GetOpenFileNameA(&to_load)) {
+		SetCurrentDirectoryA(curr_dir);
+		std::string name = filename;
+		NormalizePath(name);
+
+		App->profile->LoadFile(name);
+	}
+	else {
+		SetCurrentDirectoryA(curr_dir);
+	}
+}
+
+void ModuleUI::SaveAsteroid()
+{
+	OPENFILENAME to_save;
+
+	static char filename[MAX_PATH];
+
+	static char curr_dir[MAX_PATH];
+	GetCurrentDirectoryA(MAX_PATH, curr_dir);
+
+	std::string filter = std::string(std::string(ASTEROID_NO_DOT_EXTENSION) + '\0' + "*" + ASTEROID_EXTENSION + '\0');
+	std::string title = std::string("Save a" + std::string(ASTEROID_EXTENSION) + '\0');
+
+	ZeroMemory(&filename, sizeof(filename));
+	ZeroMemory(&to_save, sizeof(to_save));
+
+	to_save.lStructSize = sizeof(to_save);
+	to_save.hwndOwner = NULL;
+	to_save.lpstrFilter = filter.data();
+	to_save.lpstrFile = filename;
+	to_save.nMaxFile = MAX_PATH;
+	to_save.lpstrTitle = title.data();
+	to_save.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_OVERWRITEPROMPT;
+	if (GetSaveFileNameA(&to_save)) {
+		SetCurrentDirectoryA(curr_dir);
+
+		std::string extension = std::filesystem::path(filename).extension().string();
+		extension = extension.size() > 1 ? extension.substr(1) : extension;
+
+		std::string path;
+		if (strcmp(ASTEROID_NO_DOT_EXTENSION, extension.data()) != 0) {
+			path = std::string(filename + std::string(ASTEROID_EXTENSION)).data();
+		}
+		else {
+			path = filename;
+		}
+
+		NormalizePath(path);
+
+		remove(path.data());
+
+		App->profile->SaveCurrentDataToFile(path);
+	}
+	else {
+		SetCurrentDirectoryA(curr_dir);
+	}
 }
 
 void ModuleUI::UpdatePanels()

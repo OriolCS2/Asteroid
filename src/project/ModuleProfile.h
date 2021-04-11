@@ -35,6 +35,9 @@ public:
 	void DisconnectClient();
 	void ResetInfo();
 
+	void SaveCurrentDataToFile(const std::string& file);
+	void LoadFile(const std::string& file);
+
 private:
 
 	void ParseData();

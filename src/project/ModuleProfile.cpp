@@ -104,6 +104,16 @@ void ModuleProfile::ResetInfo()
 	}
 }
 
+void ModuleProfile::SaveCurrentDataToFile(const std::string& file)
+{
+	
+}
+
+void ModuleProfile::LoadFile(const std::string& file)
+{
+	
+}
+
 void ModuleProfile::ParseData()
 {
 	while (true) {
