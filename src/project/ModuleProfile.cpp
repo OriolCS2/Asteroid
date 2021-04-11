@@ -145,7 +145,7 @@ void ModuleProfile::LookForClients()
 		if (client != INVALID_SOCKET && client != SOCKET_ERROR) {
 			parseThread = std::thread(&ModuleProfile::ParseData, this);
 			framesCount = 0;
-			state = ProfileState::WAITING_INFO; // TODO: fer que en el connecting surti el simbol de la rodona girant que tinc el loading de imgui widget al trello
+			state = ProfileState::WAITING_INFO;
 		}
 	}
 }
