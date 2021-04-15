@@ -1,9 +1,8 @@
 #pragma once
 
-#pragma once
-
 #include <list>
 #include <string>
+#include <vector>
 
 class Function {
 public:
@@ -29,4 +28,15 @@ public:
 private:
 
 	double sub_functions_ms = 0;
+};
+
+struct CombinedFunction 
+{
+	std::string name;
+	std::string file;
+	int line = 0;
+	double totalMS = 0;
+	double maxCallMS = 0;
+	int count = 0;
+	double averageMS = 0;
 };

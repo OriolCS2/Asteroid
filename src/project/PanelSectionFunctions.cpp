@@ -51,16 +51,16 @@ void PanelSectionFunctions::PanelLogic()
 			ImGui::Text((*item)->name.data());
 			ImGui::NextColumn();
 
-			ImGui::Text("40");
+			ImGui::Text(std::to_string((*item)->totalMS).data());
 			ImGui::NextColumn();
 
-			ImGui::Text("40");
+			ImGui::Text(std::to_string((*item)->maxCallMS).data());;
 			ImGui::NextColumn();
 
-			ImGui::Text("40");
+			ImGui::Text(std::to_string((*item)->averageMS).data());
 			ImGui::NextColumn();
 
-			ImGui::Text("40");
+			ImGui::Text(std::to_string((*item)->count).data());
 			ImGui::NextColumn();
 
 			ImGui::Text((*item)->file.data());

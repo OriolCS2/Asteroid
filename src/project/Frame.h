@@ -3,13 +3,14 @@
 #include <list>
 
 class Function;
+struct CombinedFunction;
 
 class Frame {
 public:
 	Frame();
 	~Frame();
 
-	const std::list<Function*>& GetFunctionsData();
+	const std::list<CombinedFunction*>& GetFunctionsData();
 
 private:
 
@@ -22,5 +23,5 @@ public:
 
 private:
 
-	std::list<Function*> all_functions_data;
+	std::list<CombinedFunction*> all_functions_data;
 };
