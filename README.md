@@ -9,6 +9,10 @@ This project is made by [Oriol Capdevila Salinas](https://www.linkedin.com/in/or
 
 GitHub Repository: https://github.com/OriolCS2/Asteroid
 
+## Usage
+
+// TODO:
+
 ## MIT License
 
 Copyright (c) 2021 Oriol Capdevila
