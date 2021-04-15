@@ -1,8 +1,10 @@
 #include "Function.h"
+#include <filesystem>
 
 Function::Function(const std::string& name, const std::string& file, int line)
 	: name(name), file(file), line(line)
 {
+	this->file = std::filesystem::path(file).filename().string();
 }
 
 Function::~Function()
