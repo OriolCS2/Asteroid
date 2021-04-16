@@ -14,7 +14,7 @@ public:
 
 private:
 
-	void ShowFunctions(std::list<Function*>* functions, float cursorX, float totalSize, double sizeMs);
+	void ShowFunctions(std::list<Function*>* functions, float cursorX, float totalSize, double sizeMs, float maxX);
 
 public:
 

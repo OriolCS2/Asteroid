@@ -5,6 +5,7 @@
 #include "Function.h"
 #include "Frame.h"
 #include "ModuleInput.h"
+#include "imgui/imgui_internal.h"
 
 PanelDetailedFrame::PanelDetailedFrame(const std::string& panel_name) : Panel(panel_name)
 {
@@ -26,18 +27,19 @@ void PanelDetailedFrame::PanelLogic()
 	Frame* frame = App->ui->panel_frames->frame;
 	if (frame != nullptr && !frame->functions.empty()) {
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1, 1));
-		ShowFunctions(&frame->functions, ImGui::GetCursorPosX(), (ImGui::GetContentRegionAvail().x - 5) * scale, frame->ms);
+		ShowFunctions(&frame->functions, ImGui::GetCursorPosX(), (ImGui::GetContentRegionAvail().x - 5) * scale, frame->ms, ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x - 5) * scale);
 		ImGui::PopStyleVar();
 	}
 
 	ImGui::End();
 }
 
-void PanelDetailedFrame::ShowFunctions(std::list<Function*>* functions, float cursorX, float totalSize, double sizeMs)
+void PanelDetailedFrame::ShowFunctions(std::list<Function*>* functions, float cursorX, float totalSize, double sizeMs, float maxX)
 {
 	ImGui::SetCursorPosX(cursorX);
 	for (auto item = functions->begin(); item != functions->end(); ++item) {
-		float itemSize = (totalSize * (float)(*item)->ms) / (float)sizeMs;
+		float itemSize = (((totalSize * (float)(*item)->ms) / (float)sizeMs));
+
 		ImVec2 beforeCursor = ImGui::GetCursorPos();
 
 		if (function_selected == *item) {
@@ -55,14 +57,13 @@ void PanelDetailedFrame::ShowFunctions(std::list<Function*>* functions, float cu
 		}
 		ImGui::PopID();
 
-		ImVec2 afterCursor = ImGui::GetCursorPos();
-
 		if (!(*item)->functions.empty()) {
-			ShowFunctions(&(*item)->functions, beforeCursor.x, itemSize, (*item)->ms);
+			ShowFunctions(&(*item)->functions, beforeCursor.x, itemSize, (*item)->ms, beforeCursor.x + ImGui::GetItemRectSize().x);
 		}
 	
 		if (*item != functions->back()) {
-			ImGui::SetCursorPos(ImVec2(beforeCursor.x + itemSize + 1, beforeCursor.y));
+			float x = beforeCursor.x + itemSize + 1.0F;
+			ImGui::SetCursorPos(ImVec2(min(x, maxX), beforeCursor.y));
 		}
 	}
 }
