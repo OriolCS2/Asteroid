@@ -10,7 +10,7 @@
 #include "EntityManager.h"
 #include <math.h>
 #include "j1Pathfinding.h"
-#include "..\..\Asteroid.h"
+#include "..\Asteroid.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {

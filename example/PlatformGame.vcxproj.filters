@@ -100,7 +100,7 @@
     <ClCompile Include="j1Menu.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Asteroid.cpp">
+    <ClCompile Include="..\Asteroid.cpp">
       <Filter>Profiler</Filter>
     </ClCompile>
   </ItemGroup>
@@ -225,7 +225,7 @@
     <ClInclude Include="j1Menu.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Asteroid.h">
+    <ClInclude Include="..\Asteroid.h">
       <Filter>Profiler</Filter>
     </ClInclude>
   </ItemGroup>

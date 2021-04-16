@@ -11,7 +11,7 @@
 #include "Slider.h"
 #include "Image.h"
 
-#include "..\..\Asteroid.h"		
+#include "..\Asteroid.h"		
 
 
 UI_Manager::UI_Manager()

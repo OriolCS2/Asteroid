@@ -4,7 +4,7 @@
 #include "EntityManager.h"
 #include "j1Render.h"
 #include "j1Scene.h"
-#include "..\..\Asteroid.h"
+#include "..\Asteroid.h"
 #include "j1Map.h"
 #include "p2DynArray.h"
 #include "j1Pathfinding.h"

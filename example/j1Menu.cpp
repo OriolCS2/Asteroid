@@ -22,7 +22,7 @@
 #include "Image.h"
 #include "UI_Manager.h"
 
-#include "..\..\Asteroid.h"
+#include "..\Asteroid.h"
 
 j1Menu::j1Menu() : j1Module()
 {

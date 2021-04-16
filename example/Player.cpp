@@ -20,7 +20,7 @@
 #include "UI_Manager.h"
 #include "Image.h"
 
-#include "..\..\Asteroid.h"
+#include "..\Asteroid.h"
 
 Player::Player() : Entity()
 {

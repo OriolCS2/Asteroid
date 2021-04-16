@@ -3,7 +3,7 @@
 #include "j1Render.h"
 #include "j1Collision.h"
 
-#include "..\..\Asteroid.h"
+#include "..\Asteroid.h"
 
 j1Collision::j1Collision()
 {

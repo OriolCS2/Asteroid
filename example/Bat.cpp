@@ -12,7 +12,7 @@
 #include "p2DynArray.h"
 #include "j1Map.h"
 #include "Player.h"
-#include "..\..\Asteroid.h"
+#include "..\Asteroid.h"
 
 Bat::Bat(int x, int y) : Entity(x, y)
 {

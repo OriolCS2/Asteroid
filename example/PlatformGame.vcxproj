@@ -82,7 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Asteroid.cpp" />
+    <ClCompile Include="..\Asteroid.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CheckBox.cpp" />
@@ -118,7 +118,7 @@
     <ClCompile Include="UI_Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Asteroid.h" />
+    <ClInclude Include="..\Asteroid.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CheckBox.h" />

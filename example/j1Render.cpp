@@ -4,7 +4,7 @@
 #include "j1Window.h"
 #include "j1Render.h"
 
-#include "..\..\Asteroid.h"
+#include "..\Asteroid.h"
 
 #define VSYNC false
 
