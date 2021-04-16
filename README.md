@@ -1,4 +1,6 @@
-# Asteroid
+# Asteroid [![GitHub license](https://img.shields.io/github/license/OriolCS2/Asteroid)](https://github.com/OriolCS2/Asteroid/blob/main/LICENSE)
+
+
 Asteroid is a profiler tool that allows you to profile C++ aplications using its API inside the source code.
 
 ## Main Goal
