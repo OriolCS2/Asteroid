@@ -1,5 +1,6 @@
 #include "PanelDetailedFrame.h"
 #include "PanelFrames.h"
+#include "ModuleProfile.h"
 #include "ModuleUI.h"
 #include <queue>
 #include "Function.h"
@@ -46,7 +47,7 @@ void PanelDetailedFrame::ShowFunctions(std::list<Function*>* functions, float cu
 			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(ImGuiCol_ButtonActive));
 		}
 		ImGui::PushID(*item);
-		if (ImGui::Button((*item)->name.data(), ImVec2(itemSize, 0))) {
+		if (ImGui::Button(App->profile->functionNames[(*item)->nameIndex].data(), ImVec2(itemSize, 0))) {
 			if (function_selected == *item) {
 				ImGui::PopStyleColor();
 			}

@@ -30,6 +30,9 @@ public:
 	void SetNumber(const std::string& name, double number);
 	double GetNumber(const std::string& name, double def = 0);
 
+	void SetStringArray(const std::string& name, std::string* strings, int size);
+	std::string* GetStringArray(const std::string& name, std::string* strings, int* size);
+
 	void SetColor(const std::string& name, const Color& color);
 	Color GetColor(const std::string& name, Color def = Color::white);
 

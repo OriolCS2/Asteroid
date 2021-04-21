@@ -1,6 +1,7 @@
 #include "PanelSectionFunctions.h"
 #include "imgui/imgui_internal.h"
 #include "ModuleUI.h"
+#include "ModuleProfile.h"
 #include "PanelFrames.h"
 #include "Frame.h"
 #include "Function.h"
@@ -51,7 +52,7 @@ void PanelSectionFunctions::PanelLogic()
 		ImGui::BeginChild("childd");
 		ImGui::Columns(7, nullptr, false);
 		for (auto item = functions.begin(); item != functions.end(); ++item) {
-			ImGui::Text((*item)->name.data());
+			ImGui::Text(App->profile->functionNames[(*item)->nameIndex].data());
 			ImGui::NextColumn();
 
 			ImGui::Text(std::to_string((*item)->totalMS).data());
@@ -66,7 +67,7 @@ void PanelSectionFunctions::PanelLogic()
 			ImGui::Text(std::string("    " + std::to_string((*item)->count)).data());
 			ImGui::NextColumn();
 
-			ImGui::Text((*item)->file.data());
+			ImGui::Text(App->profile->fileNames[(*item)->fileIndex].data());
 			ImGui::NextColumn();
 
 			ImGui::Text(std::string("  " + std::to_string((*item)->line)).data());

@@ -30,7 +30,7 @@ void Frame::GenerateFunctionsData()
 
 		bool canAdd = true;
 		for (auto item = all_functions_data.begin(); item != all_functions_data.end(); ++item) {
-			if ((*item)->line == function->line && (*item)->name == function->name && (*item)->file == function->file) {
+			if ((*item)->line == function->line && (*item)->nameIndex == function->nameIndex && (*item)->fileIndex == function->fileIndex) {
 				canAdd = false;
 				++(*item)->count;
 				(*item)->totalMS += function->ms;
@@ -43,10 +43,10 @@ void Frame::GenerateFunctionsData()
 		if (canAdd) {
 			CombinedFunction* f = new CombinedFunction();
 			f->count = 1;
-			f->file = function->file;
+			f->fileIndex = function->fileIndex;
 			f->line = function->line;
 			f->maxCallMS = function->ms;
-			f->name = function->name;
+			f->nameIndex = function->nameIndex;
 			f->totalMS = function->ms;
 			all_functions_data.push_back(f);
 		}

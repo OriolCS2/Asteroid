@@ -1,10 +1,13 @@
 #include "Function.h"
+#include "Application.h"
+#include "ModuleProfile.h"
 #include <filesystem>
 
 Function::Function(const std::string& name, const std::string& file, int line)
-	: name(name), file(file), line(line)
+	: line(line)
 {
-	this->file = std::filesystem::path(file).filename().string();
+	fileIndex = App->profile->GetFileStringIndex(std::filesystem::path(file).filename().string());
+	nameIndex = App->profile->GetNameStringIndex(name);
 }
 
 Function::~Function()

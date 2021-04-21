@@ -2,7 +2,7 @@
 
 #include "Module.h"
 #include <list>
-
+#include <vector>
 #include "Packet.h"
 #include <thread>
 #include <mutex>
@@ -39,6 +39,9 @@ public:
 	void SaveCurrentDataToFile(const std::string& file);
 	void LoadFile(const std::string& file);
 
+	int GetFileStringIndex(const std::string& file);
+	int GetNameStringIndex(const std::string& name);
+
 private:
 
 	void SaveFunction(Function* function, JSONArraypack* to_save);
@@ -61,6 +64,9 @@ public:
 	std::list<Packet*> framesData;
 	std::list<Frame*> frames;
 	ProfileState state = ProfileState::NONE;
+
+	std::vector<std::string> functionNames;
+	std::vector<std::string> fileNames;
 
 private:
 

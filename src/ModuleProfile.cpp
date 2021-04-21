@@ -112,6 +112,9 @@ void ModuleProfile::SaveCurrentDataToFile(const std::string& file)
 
 	json->StartSave();
 
+	json->SetStringArray("Names", &functionNames[0], functionNames.size());
+	json->SetStringArray("Files", &fileNames[0], fileNames.size());
+
 	JSONArraypack* framesArray = json->InitNewArray("Frames");
 
 	for (auto item = frames.begin(); item != frames.end(); ++item) {
@@ -137,6 +140,22 @@ void ModuleProfile::LoadFile(const std::string& file)
 	ClearFrames();
 
 	JSONfilepack* json = JSONparser::GetJSON(file.data());
+
+	int size = 0;
+	std::string* arrays = json->GetStringArray("Names", nullptr, &size);
+	functionNames.reserve(size);
+	for (int i = 0; i < size; ++i) {
+		functionNames.push_back(arrays[i]);
+	}
+	delete[] arrays;
+
+	size = 0;
+	arrays = json->GetStringArray("Files", nullptr, &size);
+	fileNames.reserve(size);
+	for (int i = 0; i < size; ++i) {
+		fileNames.push_back(arrays[i]);
+	}
+	delete[] arrays;
 
 	JSONArraypack* framesArray = json->GetArray("Frames");
 	if (framesArray != nullptr) {
@@ -167,12 +186,32 @@ void ModuleProfile::LoadFile(const std::string& file)
 	state = ProfileState::INFO;
 }
 
+int ModuleProfile::GetFileStringIndex(const std::string& file)
+{
+	auto item = std::find(fileNames.begin(), fileNames.end(), file);
+	if (item != fileNames.end()) {
+		return item - fileNames.begin();
+	}
+	fileNames.push_back(file);
+	return fileNames.size() - 1;
+}
+
+int ModuleProfile::GetNameStringIndex(const std::string& name)
+{
+	auto item = std::find(functionNames.begin(), functionNames.end(), name);
+	if (item != functionNames.end()) {
+		return item - functionNames.begin();
+	}
+	functionNames.push_back(name);
+	return functionNames.size() - 1;
+}
+
 void ModuleProfile::SaveFunction(Function* function, JSONArraypack* to_save)
 {
 	to_save->SetNumber("ms", function->ms);
 	to_save->SetNumber("line", function->line);
-	to_save->SetString("file", function->file);
-	to_save->SetString("name", function->name);
+	to_save->SetNumber("file", function->fileIndex);
+	to_save->SetNumber("name", function->nameIndex);
 
 	JSONArraypack* functionsArray = to_save->InitNewArray("Functions");
 	for (auto it = function->functions.begin(); it != function->functions.end(); ++it) {
@@ -185,8 +224,8 @@ void ModuleProfile::LoadFunction(Function* function, JSONArraypack* to_load)
 {
 	function->ms = to_load->GetNumber("ms");
 	function->line = to_load->GetNumber("line");
-	function->file = to_load->GetString("file");
-	function->name = to_load->GetString("name");
+	function->fileIndex = to_load->GetNumber("file");
+	function->nameIndex = to_load->GetNumber("name");
 
 	JSONArraypack* functionsArray = to_load->GetArray("Functions");
 	if (functionsArray != nullptr) {
@@ -328,6 +367,8 @@ void ModuleProfile::ClearFrames()
 		delete* item;
 	}
 	frames.clear();
+	functionNames.clear();
+	fileNames.clear();
 }
 
 void ModuleProfile::ReadFunctionData(const Packet& data, std::list<Function*>& toAdd)

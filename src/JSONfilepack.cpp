@@ -70,6 +70,52 @@ double JSONparser::GetNumber(const std::string& name, double def)
 	return (json_value_get_type(val) == JSONNumber) ? json_value_get_number_unsafe(val) : def;
 }
 
+void JSONparser::SetStringArray(const std::string& name, std::string* strings, int size)
+{
+	JSON_Array* arr = json_object_dotget_array(object, name.data());
+	if (arr == nullptr) {
+		JSON_Value* new_val = json_value_init_array();
+		arr = json_value_get_array(new_val);
+		json_object_dotset_value(object, name.data(), new_val);
+	}
+	else {
+		json_array_clear(arr);
+	}
+
+	for (int i = 0; i < size; ++i) {
+		json_array_append_string(arr, strings[i].data());
+	}
+}
+
+std::string* JSONparser::GetStringArray(const std::string& name, std::string* strings, int* size)
+{
+	JSON_Value* val = json_object_dotget_value(object, name.data());
+	if (json_value_get_type(val) == JSONArray) {
+		JSON_Array* arr = json_value_get_array_unsafe(val);
+		std::string* s = nullptr;
+		int size_ = json_array_get_count(arr);
+		if (strings != nullptr) {
+			s = strings;
+		}
+		else {
+			s = new std::string[size_];
+		}
+
+		for (int i = 0; i < size_; ++i) {
+			s[i] = json_array_get_string(arr, i);
+		}
+
+		if (size != nullptr) {
+			*size = size_;
+		}
+
+		return s;
+	}
+	else {
+		return nullptr;
+	}
+}
+
 void JSONparser::SetColor(const std::string& name, const Color& color)
 {
 	JSON_Array* arr = json_object_dotget_array(object, name.data());

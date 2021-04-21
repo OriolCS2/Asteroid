@@ -19,8 +19,8 @@ private:
 
 public:
 
-	std::string name;
-	std::string file;
+	int nameIndex;
+	int fileIndex;
 	int line = 0;
 	double ms = 0;
 	std::list<Function*> functions;
@@ -32,8 +32,8 @@ private:
 
 struct CombinedFunction 
 {
-	std::string name;
-	std::string file;
+	int nameIndex;
+	int fileIndex;
 	int line = 0;
 	double totalMS = 0;
 	double maxCallMS = 0;
