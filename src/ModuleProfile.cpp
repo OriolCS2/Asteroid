@@ -112,25 +112,30 @@ void ModuleProfile::SaveCurrentDataToFile(const std::string& file)
 
 	json->StartSave();
 
-	json->SetStringArray("Names", &functionNames[0], functionNames.size());
-	json->SetStringArray("Files", &fileNames[0], fileNames.size());
+	try {
+		json->SetStringArray("Names", &functionNames[0], functionNames.size());
+		json->SetStringArray("Files", &fileNames[0], fileNames.size());
 
-	JSONArraypack* framesArray = json->InitNewArray("Frames");
+		JSONArraypack* framesArray = json->InitNewArray("Frames");
 
-	for (auto item = frames.begin(); item != frames.end(); ++item) {
-		framesArray->SetAnotherNode();
-		framesArray->SetNumber("ms", (*item)->ms);
+		for (auto item = frames.begin(); item != frames.end(); ++item) {
+			framesArray->SetAnotherNode();
+			framesArray->SetNumber("ms", (*item)->ms);
 
-		if (!(*item)->functions.empty()) {
-			JSONArraypack* functionsArray = framesArray->InitNewArray("Functions");
-			for (auto it = (*item)->functions.begin(); it != (*item)->functions.end(); ++it) {
-				functionsArray->SetAnotherNode();
-				SaveFunction(*it, functionsArray);
+			if (!(*item)->functions.empty()) {
+				JSONArraypack* functionsArray = framesArray->InitNewArray("Functions");
+				for (auto it = (*item)->functions.begin(); it != (*item)->functions.end(); ++it) {
+					functionsArray->SetAnotherNode();
+					SaveFunction(*it, functionsArray);
+				}
 			}
 		}
-	}
 
-	json->FinishSave();
+		json->FinishSave();
+	}
+	catch (...) {
+		// If it fails it is beacuse it is too many data to save in json, so use binary
+	}
 
 	JSONparser::FreeJSON(json);
 }
