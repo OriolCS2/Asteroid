@@ -65,7 +65,7 @@ j1Collision::~j1Collision()
 
 bool j1Collision::PreUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	// Remove all colliders scheduled for deletion
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
@@ -114,7 +114,7 @@ bool j1Collision::PreUpdate()
 // Called before render is available
 bool j1Collision::Update(float dt)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		debug = !debug;
 	DebugDraw();

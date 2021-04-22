@@ -4,9 +4,11 @@
 #include <string>
 #include <vector>
 
+enum class AsteroidColor;
+
 class Function {
 public:
-	Function(const std::string& name, const std::string& file, int line);
+	Function(const std::string& name, const std::string& file, int line, AsteroidColor color);
 	Function() {}
 	~Function();
 
@@ -19,6 +21,7 @@ private:
 
 public:
 
+	AsteroidColor color;
 	int nameIndex;
 	int fileIndex;
 	int line = 0;

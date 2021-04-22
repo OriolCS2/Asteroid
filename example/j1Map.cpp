@@ -35,7 +35,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	
 	if (map_loaded == false)
 		return;
@@ -183,7 +183,7 @@ bool j1Map::CreateWalkabilityMap(int & width, int & height, uchar ** buffer) con
 
 bool j1Map::ChangeMap(const p2SString * map)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	CleanUp();
 	Load(map->GetString());
 	int w, h;
@@ -253,7 +253,7 @@ bool j1Map::CleanUp()
 // Load new map
 bool j1Map::Load(const char* file_name)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
 

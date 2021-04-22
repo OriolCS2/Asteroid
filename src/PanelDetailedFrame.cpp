@@ -2,6 +2,7 @@
 #include "PanelFrames.h"
 #include "ModuleProfile.h"
 #include "ModuleUI.h"
+#include "Color.h"
 #include <queue>
 #include "Function.h"
 #include "Frame.h"
@@ -35,6 +36,20 @@ void PanelDetailedFrame::PanelLogic()
 	ImGui::End();
 }
 
+#define ADD_COLOR_CASE(TYPE, COLOR)\
+	case TYPE: {\
+	if (function_selected == *item) {\
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(COLOR.r, COLOR.g, COLOR.b, 1.0F));\
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(COLOR.r, COLOR.g, COLOR.b, 0.9F));\
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(COLOR.r, COLOR.g, COLOR.b, 1.0F));\
+	}\
+	else {\
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(COLOR.r, COLOR.g, COLOR.b, 0.8F));\
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(COLOR.r, COLOR.g, COLOR.b, 0.9F));\
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(COLOR.r, COLOR.g, COLOR.b, 1.0F));\
+	}\
+	break; }
+
 void PanelDetailedFrame::ShowFunctions(std::list<Function*>* functions, float cursorX, float totalSize, double sizeMs, float maxX)
 {
 	ImGui::SetCursorPosX(cursorX);
@@ -43,20 +58,41 @@ void PanelDetailedFrame::ShowFunctions(std::list<Function*>* functions, float cu
 
 		ImVec2 beforeCursor = ImGui::GetCursorPos();
 
-		if (function_selected == *item) {
-			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(ImGuiCol_ButtonActive));
+		bool wasSelected = function_selected == *item;
+
+		switch ((*item)->color) {
+		ADD_COLOR_CASE(AsteroidColor::MAGENTA, Color::magenta);
+		ADD_COLOR_CASE(AsteroidColor::BLACK, Color::black);
+		ADD_COLOR_CASE(AsteroidColor::BLUE, Color::blue);
+		ADD_COLOR_CASE(AsteroidColor::CYAN, Color::cyan);
+		ADD_COLOR_CASE(AsteroidColor::GRAY, Color::gray);
+		ADD_COLOR_CASE(AsteroidColor::GREEN, Color::green);
+		ADD_COLOR_CASE(AsteroidColor::RED, Color::red);
+		ADD_COLOR_CASE(AsteroidColor::WHITE, Color::white);
+		ADD_COLOR_CASE(AsteroidColor::YELLOW, Color::yellow);
+		ADD_COLOR_CASE(AsteroidColor::ORANGE, Color::orange);
+		ADD_COLOR_CASE(AsteroidColor::PURPLE, Color::purple);
+		default: {
+			if (function_selected == *item) {
+				ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetColorU32(ImGuiCol_ButtonActive, 1.0F));
+			}
+			break; }
 		}
+
 		ImGui::PushID(*item);
 		if (ImGui::Button(App->profile->functionNames[(*item)->nameIndex].data(), ImVec2(itemSize, 0))) {
 			if (function_selected == *item) {
-				ImGui::PopStyleColor();
+				ImGui::PopStyleColor((*item)->color != AsteroidColor::NONE ? 3 : 1);
 			}
 			App->ui->OnFunctionSelected(*item);
 		}
 		else if (function_selected == *item) {
-			ImGui::PopStyleColor();
+			ImGui::PopStyleColor((*item)->color != AsteroidColor::NONE ? 3 : 1);
 		}
 		ImGui::PopID();
+		if ((*item)->color != AsteroidColor::NONE && !wasSelected) {
+			ImGui::PopStyleColor(3);
+		}
 
 		if (!(*item)->functions.empty()) {
 			ShowFunctions(&(*item)->functions, beforeCursor.x, itemSize, (*item)->ms, beforeCursor.x + ImGui::GetItemRectSize().x);

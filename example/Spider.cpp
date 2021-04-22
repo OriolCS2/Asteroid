@@ -54,7 +54,7 @@ Spider::~Spider()
 
 bool Spider::PreUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 
 	
 	return true;
@@ -62,7 +62,7 @@ bool Spider::PreUpdate()
 
 bool Spider::PostUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (coll != nullptr) {
 		if (coll->CanBeDeleted) {
 			coll->CanBeDeleted = false;
@@ -81,7 +81,7 @@ bool Spider::PostUpdate()
 
 bool Spider::Update(float dt)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (!App->scene->GamePaused) {
 		if (coll == nullptr)
 			coll = App->collision->AddCollider({ 0,0,72,53 }, COLLIDER_ENEMY_SPIDER, (j1Module*)App->entitymanager);

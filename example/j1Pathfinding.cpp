@@ -167,7 +167,7 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	last_path.Clear();
 	// TODO 1: if origin or destination are not walkable, return -1
 

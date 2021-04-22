@@ -149,7 +149,7 @@ bool j1App::Awake()
 // Called before the first frame
 bool j1App::Start()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	PERF_START(ptimer);
 	bool ret = true;
 	p2List_item<j1Module*>* item;
@@ -172,7 +172,7 @@ bool j1App::Start()
 // Called each loop iteration
 bool j1App::Update()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	bool ret = true;
 	PrepareUpdate();
 
@@ -214,7 +214,7 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file, char* file) co
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	frame_count++;
 	last_sec_frame_count++;
 	dt = frame_time.ReadSec();
@@ -226,7 +226,7 @@ void j1App::PrepareUpdate()
 // ---------------------------------------------
 void j1App::FinishUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (want_to_save == true)
 		SavegameNow();
 
@@ -280,7 +280,7 @@ void j1App::FinishUpdate()
 // Call modules before each loop iteration
 bool j1App::PreUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -307,7 +307,7 @@ bool j1App::PreUpdate()
 // Call modules on each loop iteration
 bool j1App::DoUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -330,7 +330,7 @@ bool j1App::DoUpdate()
 // Call modules after each loop iteration
 bool j1App::PostUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	j1Module* pModule = NULL;

@@ -16,6 +16,21 @@ enum class ProfileState {
 	INFO
 };
 
+enum class AsteroidColor {
+	BLACK = 0,
+	BLUE = 1,
+	CYAN = 2,
+	GRAY = 3,
+	GREEN = 4,
+	MAGENTA = 5,
+	RED = 6,
+	WHITE = 7,
+	YELLOW = 8,
+	ORANGE = 9,
+	PURPLE = 10,
+	NONE = -1
+};
+
 class JSONArraypack;
 class Frame;
 class Function;

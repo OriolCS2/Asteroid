@@ -163,7 +163,7 @@ void CreateClientSocket()
 	connectionThread = std::thread(TryConnection);
 }
 
-ProfilerFrameData::ProfilerFrameData()
+AsteroidFrameData::AsteroidFrameData()
 {
 	if (isConnected || (isConnected = CheckThread())) {
 		if (HasSocketInfo(client)) {
@@ -176,7 +176,7 @@ ProfilerFrameData::ProfilerFrameData()
 	}
 }
 
-ProfilerFrameData::~ProfilerFrameData()
+AsteroidFrameData::~AsteroidFrameData()
 {
 	if (isConnected) {
 		double ms = clock.ReadMs();
@@ -211,7 +211,7 @@ ProfilerFrameData::~ProfilerFrameData()
 	}
 }
 
-void ProfilerInit()
+void AsteroidInit()
 {
 	WSADATA wsaData;
 	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -228,7 +228,7 @@ void ProfilerInit()
 	}
 }
 
-void ProfilerCleanup()
+void AsteroidCleanup()
 {
 	if (client != NULL) {
 		closesocket(client);
@@ -249,7 +249,7 @@ void ProfilerCleanup()
 	}
 }
 
-ProfilerFunctionData::ProfilerFunctionData(const char* functionName, const char* fileName, int line, int functionSize, int fileSize)
+AsteroidFunctionData::AsteroidFunctionData(const char* functionName, const char* fileName, int line, int functionSize, int fileSize, AsteroidColor color)
 {
 	if (isConnected) {
 		packet->SetEnum(DataType::FUNCTION_BEGIN);
@@ -258,12 +258,13 @@ ProfilerFunctionData::ProfilerFunctionData(const char* functionName, const char*
 		packet->SetInt(functionSize);
 		packet->SetChar(functionName, functionSize);
 		packet->SetInt(line);
+		packet->SetEnum(color);
 
 		clock.Start();
 	}
 }
 
-ProfilerFunctionData::~ProfilerFunctionData()
+AsteroidFunctionData::~AsteroidFunctionData()
 {
 	if (isConnected) {
 		double ms = clock.ReadMs();

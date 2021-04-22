@@ -30,7 +30,7 @@ int main(int argc, char* args[])
 	MainState state = MainState::CREATE;
 	int result = EXIT_FAILURE;
 
-	PROFILER_INIT();
+	ASTEROID_INIT();
 
 	while(state != EXIT)
 	{
@@ -81,7 +81,7 @@ int main(int argc, char* args[])
 			// Loop all modules until we are asked to leave ---------------------
 			case LOOP:
 			{
-				PROFILER_START_FRAME();
+				ASTEROID_FRAME();
 				if (App->Update() == false)
 					state = CLEAN;
 			}break;
@@ -109,7 +109,7 @@ int main(int argc, char* args[])
 		}
 	}
 
-	PROFILER_CLEANUP();
+	ASTEROID_CLEANUP();
 
 	LOG("... Bye! :)\n");
 

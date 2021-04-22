@@ -3,16 +3,35 @@
 
 #include <chrono>
 
-#define PROFILER_INIT() ProfilerInit();
+#define ASTEROID_INIT() AsteroidInit();
 
-#define PROFILER_CLEANUP() ProfilerCleanup();
+#define ASTEROID_CLEANUP() AsteroidCleanup();
 
-#define PROFILER_START_FRAME() ProfilerFrameData profilerFrameData;
+#define ASTEROID_FRAME() AsteroidFrameData profilerFrameData;
 
-#define PROFILER_FUNCTION() ProfilerFunctionData profilerFunctionData(__FUNCTION__, __FILE__, __LINE__, sizeof(__FUNCTION__), sizeof(__FILE__));
+#define ASTEROID_FUNCTION() AsteroidFunctionData profilerFunctionData(__FUNCTION__, __FILE__, __LINE__, sizeof(__FUNCTION__), sizeof(__FILE__));
 
-void ProfilerInit();
-void ProfilerCleanup();
+#define ASTEROID_FUNCTION_EX(NAME) AsteroidFunctionData profilerFunctionData(NAME, __FILE__, __LINE__, sizeof(NAME), sizeof(__FILE__));
+
+#define ASTEROID_CATEGORY(NAME, COLOR) AsteroidFunctionData profilerFunctionData(NAME, __FILE__, __LINE__, sizeof(NAME), sizeof(__FILE__), COLOR);
+
+void AsteroidInit();
+void AsteroidCleanup();
+
+enum class AsteroidColor {
+	BLACK = 0,
+	BLUE = 1,
+	CYAN = 2,
+	GRAY = 3,
+	GREEN = 4,
+	MAGENTA = 5,
+	RED = 6,
+	WHITE = 7,
+	YELLOW = 8,
+	ORANGE = 9,
+	PURPLE = 10,
+	NONE = -1
+};
 
 class Clock {
 public:
@@ -33,20 +52,20 @@ private:
 	std::chrono::steady_clock::time_point start;
 };
 
-class ProfilerFrameData {
+class AsteroidFrameData {
 public:
-	ProfilerFrameData();
-	~ProfilerFrameData();
+	AsteroidFrameData();
+	~AsteroidFrameData();
 
 private:
 
 	Clock clock;
 };
 
-class ProfilerFunctionData {
+class AsteroidFunctionData {
 public:
-	ProfilerFunctionData(const char* functionName, const char* fileName, int line, int functionSize, int fileSize);
-	~ProfilerFunctionData();
+	AsteroidFunctionData(const char* functionName, const char* fileName, int line, int functionSize, int fileSize, AsteroidColor color = AsteroidColor::NONE);
+	~AsteroidFunctionData();
 
 private:
 

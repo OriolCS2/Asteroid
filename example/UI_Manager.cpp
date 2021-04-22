@@ -40,7 +40,7 @@ bool UI_Manager::Start()
 
 bool UI_Manager::Update(float dt)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
 		debug_draw = !debug_draw;
 	}

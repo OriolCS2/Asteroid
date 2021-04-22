@@ -116,7 +116,7 @@ bool Player::Awake(pugi::xml_node& config)
 
 bool Player::Start()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	bool ret = true;
 	auxGravity = gravity;
 
@@ -163,7 +163,7 @@ bool Player::Start()
 }
 bool Player::PreUpdate() //Here we preload the input functions to determine the state of the player
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (!App->scene->GamePaused) {
 		if (!God && !Intro) {
 			if (!NoInput) {
@@ -208,7 +208,7 @@ bool Player::PreUpdate() //Here we preload the input functions to determine the 
 }
 bool Player::Update(float dt)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	DT = dt;
 	
 	if (!App->scene->GamePaused || App->scene->StartTimer) {
@@ -277,7 +277,7 @@ bool Player::Update(float dt)
 
 bool Player::PostUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (!Intro && !App->scene->GamePaused) {
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 			ChangePlayer(0, true);
@@ -778,7 +778,7 @@ Animation Player::LoadPushbacks(int playernumber, pugi::xml_node& config, p2SStr
 
 void Player::ChangePlayer(const int playernumber, bool InGame)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	
 	App->tex->UnLoad(texture);
 	texture = App->tex->Load(sprites_name[playernumber].GetString());

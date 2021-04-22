@@ -103,7 +103,7 @@ bool j1Menu::Start()
 // Called each loop iteration
 bool j1Menu::PreUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !GameOn && !start) {
@@ -119,7 +119,7 @@ bool j1Menu::PreUpdate()
 // Called each loop iteration
 bool j1Menu::Update(float dt)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (start) {
 		if (!GameOn) {
 			if (InSettings)
@@ -140,7 +140,7 @@ bool j1Menu::Update(float dt)
 // Called each loop iteration
 bool j1Menu::PostUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	bool ret = true;
 	if (!GameOn) {
 		if (Exit)

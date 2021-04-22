@@ -3,8 +3,8 @@
 #include "ModuleProfile.h"
 #include <filesystem>
 
-Function::Function(const std::string& name, const std::string& file, int line)
-	: line(line)
+Function::Function(const std::string& name, const std::string& file, int line, AsteroidColor color)
+	: line(line), color(color)
 {
 	fileIndex = App->profile->GetFileStringIndex(std::filesystem::path(file).filename().string());
 	nameIndex = App->profile->GetNameStringIndex(name);

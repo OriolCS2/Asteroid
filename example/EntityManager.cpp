@@ -59,7 +59,7 @@ bool EntityManager::Start()
 
 bool EntityManager::PreUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (ActiveGame) {
 		for (int i = 0; i < entities.Count(); i++) {
 			if (entities[i] != nullptr)
@@ -73,7 +73,7 @@ bool EntityManager::PreUpdate()
 // Called before render is available
 bool EntityManager::Update(float dt)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (ActiveGame) {
 		
 		for (int i = 0; i < entities.Count(); i++) {
@@ -99,7 +99,7 @@ bool EntityManager::Update(float dt)
 
 bool EntityManager::PostUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (ActiveGame) {
 		for (int i = 0; i < entities.Count(); i++) {
 			if (entities[i] != nullptr)

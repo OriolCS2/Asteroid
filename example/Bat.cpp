@@ -51,7 +51,7 @@ Bat::~Bat()
 
 bool Bat::PreUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 
 
 	return true;
@@ -59,7 +59,7 @@ bool Bat::PreUpdate()
 
 bool Bat::PostUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (coll != nullptr) {
 		if (coll->CanBeDeleted) {
 			coll->CanBeDeleted = false;
@@ -78,7 +78,7 @@ bool Bat::PostUpdate()
 
 bool Bat::Update(float dt)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (!App->scene->GamePaused) {
 		AnimationLogic();
 

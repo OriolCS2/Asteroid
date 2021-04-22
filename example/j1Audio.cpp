@@ -142,7 +142,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 
 bool j1Audio::Update(float dt)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_REPEAT)
 	{
 		volume ++;

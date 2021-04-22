@@ -217,6 +217,7 @@ void ModuleProfile::SaveFunction(Function* function, JSONArraypack* to_save)
 	to_save->SetNumber("line", function->line);
 	to_save->SetNumber("file", function->fileIndex);
 	to_save->SetNumber("name", function->nameIndex);
+	to_save->SetNumber("color", (int)function->color);
 
 	JSONArraypack* functionsArray = to_save->InitNewArray("Functions");
 	for (auto it = function->functions.begin(); it != function->functions.end(); ++it) {
@@ -231,6 +232,7 @@ void ModuleProfile::LoadFunction(Function* function, JSONArraypack* to_load)
 	function->line = to_load->GetNumber("line");
 	function->fileIndex = to_load->GetNumber("file");
 	function->nameIndex = to_load->GetNumber("name");
+	function->color = (AsteroidColor)(int)to_load->GetNumber("color", -1);
 
 	JSONArraypack* functionsArray = to_load->GetArray("Functions");
 	if (functionsArray != nullptr) {
@@ -380,12 +382,14 @@ void ModuleProfile::ReadFunctionData(const Packet& data, std::list<Function*>& t
 {
 	std::string fileName, functionName;
 	int line;
-	
+	AsteroidColor color;
+
 	data.ReadString(fileName);
 	data.ReadString(functionName);
 	data >> line;
+	data >> color;
 
-	Function* function = new Function(functionName, fileName, line);
+	Function* function = new Function(functionName, fileName, line, color);
 	toAdd.push_back(function);
 
 	DataType type;

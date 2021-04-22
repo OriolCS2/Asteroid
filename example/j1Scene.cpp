@@ -56,7 +56,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	//App->map->Load(map_name.start->data->GetString());
 	//active = false;
 	return true;
@@ -65,14 +65,14 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	return true;
 }
 
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	if(App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		App->LoadGame("save_game.xml", true);
 
@@ -161,7 +161,7 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-	PROFILER_FUNCTION();
+	ASTEROID_FUNCTION();
 	bool ret = true;
 
 	if (CanStart && App->fade->current_step == App->fade->fade_from_black) {
