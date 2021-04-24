@@ -60,7 +60,9 @@ public:
 private:
 
 	void LoadAsteroid();
+	void LoadAsteroidBinary();
 	void SaveAsteroid();
+	void SaveAsteroidBinary();
 
 	void UpdatePanels();
 

@@ -33,6 +33,8 @@ enum class AsteroidColor {
 
 class JSONArraypack;
 class Frame;
+class BinarySave;
+class BinaryLoad;
 class Function;
 
 class ModuleProfile : public Module
@@ -52,7 +54,9 @@ public:
 	void ResetInfo();
 
 	void SaveCurrentDataToFile(const std::string& file);
+	void SaveCurrentDataToBinaryFile(const std::string& file);
 	void LoadFile(const std::string& file);
+	void LoadBinaryFile(const std::string& file);
 
 	int GetFileStringIndex(const std::string& file);
 	int GetNameStringIndex(const std::string& name);
@@ -60,7 +64,9 @@ public:
 private:
 
 	void SaveFunction(Function* function, JSONArraypack* to_save);
+	void SaveFunctionBinary(Function* function, BinarySave* to_save);
 	void LoadFunction(Function* function, JSONArraypack* to_load);
+	void LoadBinaryFunction(Function* function, BinaryLoad* to_load);
 
 	void ParseData();
 
@@ -82,6 +88,8 @@ public:
 
 	std::vector<std::string> functionNames;
 	std::vector<std::string> fileNames;
+
+	bool stopSave = false;
 
 private:
 

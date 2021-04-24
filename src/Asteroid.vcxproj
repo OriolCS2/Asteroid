@@ -135,6 +135,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BinaryLoad.h" />
+    <ClInclude Include="BinarySave.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="Function.h" />
@@ -313,6 +315,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BinaryLoad.cpp" />
+    <ClCompile Include="BinarySave.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="Function.cpp" />

@@ -562,6 +562,12 @@
     <ClInclude Include="Color.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="BinarySave.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryLoad.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -739,6 +745,12 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="BinarySave.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryLoad.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,6 +3,8 @@
 #include "ModuleUI.h"
 #include "JSONfilepack.h"
 #include "Function.h"
+#include "BinarySave.h"
+#include "BinaryLoad.h"
 #include "Frame.h"
 #include <stack>
 
@@ -140,6 +142,39 @@ void ModuleProfile::SaveCurrentDataToFile(const std::string& file)
 	JSONparser::FreeJSON(json);
 }
 
+void ModuleProfile::SaveCurrentDataToBinaryFile(const std::string& file)
+{
+	BinarySave to_save;
+
+	to_save.SetNumber(functionNames.size());
+	for (auto item = functionNames.begin(); item != functionNames.end(); ++item) {
+		to_save.SetString(*item);
+	}
+
+	to_save.SetNumber(fileNames.size());
+	for (auto item = fileNames.begin(); item != fileNames.end(); ++item) {
+		to_save.SetString(*item);
+	}
+
+	to_save.SetNumber(frames.size());
+	for (auto item = frames.begin(); item != frames.end(); ++item) {
+		to_save.SetNumber((*item)->ms);
+		to_save.SetNumber((*item)->functions.size());
+		if (!(*item)->functions.empty()) {
+			for (auto it = (*item)->functions.begin(); it != (*item)->functions.end(); ++it) {
+				SaveFunctionBinary(*it, &to_save);
+			}
+		}
+	}
+
+	if (stopSave) {
+		stopSave = false;
+	}
+	else {
+		to_save.Save(file);
+	}
+}
+
 void ModuleProfile::LoadFile(const std::string& file)
 {
 	ClearFrames();
@@ -191,6 +226,50 @@ void ModuleProfile::LoadFile(const std::string& file)
 	state = ProfileState::INFO;
 }
 
+void ModuleProfile::LoadBinaryFile(const std::string& file)
+{
+	BinaryLoad to_load = BinaryLoad(file);
+
+	size_t size = to_load.GetNumber<size_t>();
+	if (size > 0) {
+		functionNames.reserve(size);
+		for (int i = 0; i < size; ++i) {
+			functionNames.push_back(to_load.GetString());
+		}
+	}
+
+	size = to_load.GetNumber<size_t>();
+	if (size > 0) {
+		fileNames.reserve(size);
+		for (int i = 0; i < size; ++i) {
+			fileNames.push_back(to_load.GetString());
+		}
+	}
+
+	size = to_load.GetNumber<size_t>();
+	if (size > 0) {
+		for (int i = 0; i < size; ++i) {
+			Frame* frame = new Frame();
+			frames.push_back(frame);
+
+			frame->ms = to_load.GetNumber<double>();
+
+			size_t fSize = to_load.GetNumber<size_t>();
+
+			if (fSize > 0) {
+				for (int j = 0; j < fSize; ++j) {
+					Function* function = new Function();
+					frame->functions.push_back(function);
+
+					LoadBinaryFunction(function, &to_load);
+				}
+			}
+		}
+	}
+
+	state = ProfileState::INFO;
+}
+
 int ModuleProfile::GetFileStringIndex(const std::string& file)
 {
 	auto item = std::find(fileNames.begin(), fileNames.end(), file);
@@ -226,6 +305,22 @@ void ModuleProfile::SaveFunction(Function* function, JSONArraypack* to_save)
 	}
 }
 
+void ModuleProfile::SaveFunctionBinary(Function* function, BinarySave* to_save)
+{
+	to_save->SetNumber(function->ms);
+	to_save->SetNumber(function->line);
+	to_save->SetNumber(function->fileIndex);
+	to_save->SetNumber(function->nameIndex);
+	to_save->SetNumber((int)function->color);
+
+	to_save->SetNumber(function->functions.size());
+	if (!function->functions.empty()) {
+		for (auto it = function->functions.begin(); it != function->functions.end(); ++it) {
+			SaveFunctionBinary(*it, to_save);
+		}
+	}
+}
+
 void ModuleProfile::LoadFunction(Function* function, JSONArraypack* to_load)
 {
 	function->ms = to_load->GetNumber("ms");
@@ -243,6 +338,25 @@ void ModuleProfile::LoadFunction(Function* function, JSONArraypack* to_load)
 			LoadFunction(f, functionsArray);
 
 			functionsArray->GetAnotherNode();
+		}
+	}
+}
+
+void ModuleProfile::LoadBinaryFunction(Function* function, BinaryLoad* to_load)
+{
+	function->ms = to_load->GetNumber<double>();
+	function->line = to_load->GetNumber<int>();
+	function->fileIndex = to_load->GetNumber<int>();
+	function->nameIndex = to_load->GetNumber<int>();
+	function->color = (AsteroidColor)to_load->GetNumber<int>();
+
+	size_t size = to_load->GetNumber<size_t>();
+	if (size > 0) {
+		for (int i = 0; i < size; ++i) {
+			Function* f = new Function();
+			function->functions.push_back(f);
+
+			LoadBinaryFunction(f, to_load);
 		}
 	}
 }
