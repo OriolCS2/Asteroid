@@ -215,11 +215,6 @@ JSONArraypack::~JSONArraypack()
 	}
 }
 
-bool JSONArraypack::IsFinished()
-{
-	return index >= json_array_get_count(arr);
-}
-
 void JSONArraypack::SetAnotherNode()
 {
 	// I hope when destroying the core value of the file everything is deleted :) 
@@ -239,20 +234,6 @@ bool JSONArraypack::GetAnotherNode()
 	else {
 		return false;
 	}
-}
-
-void JSONArraypack::GetFirstNode()
-{
-	index = 0;
-	value = json_array_get_value(arr, index);
-	object = json_value_get_object(value);
-}
-
-void JSONArraypack::GetNode(const uint& index)
-{
-	this->index = index;
-	value = json_array_get_value(arr, index);
-	object = json_value_get_object(value);
 }
 
 uint JSONArraypack::GetArraySize()

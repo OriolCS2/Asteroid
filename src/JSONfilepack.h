@@ -76,11 +76,8 @@ public:
 	JSONArraypack(JSON_Array* arr, JSON_Value* value, const std::string& name);
 	~JSONArraypack();
 
-	bool IsFinished();
 	void SetAnotherNode();
 	bool GetAnotherNode();
-	void GetFirstNode();
-	void GetNode(const uint& index);
 	uint GetArraySize();
 
 	void ClearArrays() override;

@@ -33,17 +33,16 @@ ModuleProfile::~ModuleProfile()
 	}
 
 	ClearFrames();
+
+	WSACleanup();
 }
 
 bool ModuleProfile::Start()
 {
 	WSADATA wsaData;
 	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (iResult != NO_ERROR) {
-		LOG("Error sockets api");
-	}
-
-	return true;
+	
+	return iResult == NO_ERROR;
 }
 
 update_status ModuleProfile::Update(float dt)
@@ -74,8 +73,8 @@ void ModuleProfile::ConnectClient()
 	server = socket(AF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in bindAddr;
-	bindAddr.sin_family = AF_INET; // IPv4
-	bindAddr.sin_port = htons(8000); // Port
+	bindAddr.sin_family = AF_INET;
+	bindAddr.sin_port = htons(8000);
 	bindAddr.sin_addr.S_un.S_addr = INADDR_ANY; // Any local IP address
 
 	bind(server, (const struct sockaddr*)&bindAddr, sizeof(bindAddr));
@@ -368,10 +367,10 @@ void ModuleProfile::ParseData()
 		Packet* data = nullptr;
 		{
 			std::unique_lock<std::mutex> lock(mtx);
-			if (exitThreadFlag) {
-				exitThreadFlag = false;
-				break;
-			}
+			//if (exitThreadFlag) {
+			//	exitThreadFlag = false;
+			//	break;
+			//}
 
 			if (!framesData.empty()) {
 				data = framesData.front();
