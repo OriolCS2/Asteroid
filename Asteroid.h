@@ -44,7 +44,7 @@ public:
 
 	double ReadMs()
 	{
-		return  std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start).count();
+		return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start).count();
 	}
 
 private:

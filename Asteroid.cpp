@@ -186,15 +186,6 @@ AsteroidFrameData::~AsteroidFrameData()
 
 		packet->WriteCurrentSize();
 
-		int val;
-		memcpy(&val, packet->GetData(), sizeof(int));
-
-		int val2;
-		memcpy(&val2, packet->GetData() + sizeof(int), sizeof(int));
-
-		DataType val3;
-		memcpy(&val3, packet->GetData() + sizeof(int) * 2, sizeof(int));
-
 		char* data = (char*)packet->GetData();
 		size_t size = packet->GetSize();
 		size_t dataSend = 0U;
@@ -215,10 +206,7 @@ void AsteroidInit()
 {
 	WSADATA wsaData;
 	int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (iResult != NO_ERROR) {
-		// ERROR
-	}
-	else {
+	if (iResult == NO_ERROR) {
 		CreateClientSocket();
 
 		bindAddr.sin_family = AF_INET;
