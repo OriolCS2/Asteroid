@@ -73,6 +73,7 @@ private:
 private:
 	// demo
 	bool show_demo_window = false;
+	bool showAbout = false;
 	
 	std::map<Font, ImFont*> imFonts;
 	SDL_GLContext context;

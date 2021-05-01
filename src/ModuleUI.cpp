@@ -219,6 +219,40 @@ void ModuleUI::Draw()
 		ImGui::ShowDemoWindow(&show_demo);
 	}
 
+	if (showAbout) {
+
+		ImGui::OpenPopup("About Asteroid");
+		ImGui::SetNextWindowSize({ 500,130 });
+		ImGui::SetNextWindowPosCenter(ImGuiCond_Always);
+		if (ImGui::BeginPopupModal("About Asteroid", &showAbout, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
+		{
+			ImGui::SetCursorPosX(45);
+			ImGui::SetCursorPosY(30);
+			ImGui::TextWrapped("Asteroid is a profiler tool that allows you to profile C++ applications using its API inside the source code.");
+			ImGui::Spacing();
+			ImGui::SetCursorPosX(185);
+			if (ImGui::Button("Asteroid Github")) {
+				ShellExecuteA(NULL, "open", "https://github.com/OriolCS2/Asteroid", NULL, NULL, SW_SHOWNORMAL);
+			}
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::SetCursorPosX(105);
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Made By Oriol Capdevila");
+			ImGui::SameLine();
+			if (ImGui::Button("Github")) {
+				ShellExecuteA(NULL, "open", "https://github.com/OriolCS2", NULL, NULL, SW_SHOWNORMAL);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("LinkedIn")) {
+				ShellExecuteA(NULL, "open", "https://www.linkedin.com/in/oriol-capdevila/", NULL, NULL, SW_SHOWNORMAL);
+			}
+			
+
+			ImGui::EndPopup();
+		}
+	}
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -257,7 +291,7 @@ void ModuleUI::MainMenuBar()
 	}
 
 	if (ImGui::BeginMenu("About")) {
-
+		showAbout = true;
 		ImGui::EndMenu();
 	}
 
