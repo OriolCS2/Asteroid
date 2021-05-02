@@ -10,7 +10,7 @@
 
 #include "..\Asteroid.h"
 
-enum MainState
+enum class MainState
 {
 	CREATE = 1,
 	AWAKE,
@@ -25,94 +25,89 @@ j1App* App = NULL;
 
 int main(int argc, char* args[])
 {
-	LOG("Engine starting ... %d");
-
 	MainState state = MainState::CREATE;
 	int result = EXIT_FAILURE;
 
 	ASTEROID_INIT();
 
-	while(state != EXIT)
+	while(state != MainState::EXIT)
 	{
 		switch(state)
 		{
 
 			// Allocate the engine --------------------------------------------
-			case CREATE:
+			case MainState::CREATE:
 			LOG("CREATION PHASE ===============================");
 
 			App = new j1App(argc, args);
 
 			if(App != NULL)
-				state = AWAKE;
+				state = MainState::AWAKE;
 			else
-				state = FAIL;
+				state = MainState::FAIL;
 
 			break;
 
 			// Awake all modules -----------------------------------------------
-			case AWAKE:
+			case MainState::AWAKE:
 			LOG("AWAKE PHASE ===============================");
 			if(App->Awake() == true)
-				state = START;
+				state = MainState::START;
 			else
 			{
 				LOG("ERROR: Awake failed");
-				state = FAIL;
+				state = MainState::FAIL;
 			}
 
 			break;
 
 			// Call all modules before first frame  ----------------------------
-			case START:
+			case MainState::START:
 			LOG("START PHASE ===============================");
 			if(App->Start() == true)
 			{
-				state = LOOP;
+				state = MainState::LOOP;
 				LOG("UPDATE PHASE ===============================");
 			}
 			else
 			{
-				state = FAIL;
+				state = MainState::FAIL;
 				LOG("ERROR: Start failed");
 			}
 			break;
 
 			// Loop all modules until we are asked to leave ---------------------
-			case LOOP:
+			case MainState::LOOP:
 			{
 				ASTEROID_FRAME();
 				if (App->Update() == false)
-					state = CLEAN;
-			}break;
+					state = MainState::CLEAN;
+			} break;
 
 			// Cleanup allocated memory -----------------------------------------
-			case CLEAN:
+			case MainState::CLEAN:
 			LOG("CLEANUP PHASE ===============================");
 			if(App->CleanUp() == true)
 			{
 				RELEASE(App);
 				result = EXIT_SUCCESS;
-				state = EXIT;
+				state = MainState::EXIT;
 			}
 			else
-				state = FAIL;
+				state = MainState::FAIL;
 
 			break;
 
 			// Exit with errors and shame ---------------------------------------
-			case FAIL:
+			case MainState::FAIL:
 			LOG("Exiting with errors :(");
 			result = EXIT_FAILURE;
-			state = EXIT;
+			state = MainState::EXIT;
 			break;
 		}
 	}
 
 	ASTEROID_CLEANUP();
 
-	LOG("... Bye! :)\n");
-
-	// Dump memory leaks
 	return result;
 }

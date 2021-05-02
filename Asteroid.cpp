@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include <time.h>
+#include <atomic>
 
 #pragma comment(lib, "ws2_32.lib")
 

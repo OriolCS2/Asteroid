@@ -78,7 +78,7 @@ bool Bat::PostUpdate()
 
 bool Bat::Update(float dt)
 {
-	ASTEROID_FUNCTION();
+	ASTEROID_CATEGORY("Bat Logic", AsteroidColor::ORANGE);
 	if (!App->scene->GamePaused) {
 		AnimationLogic();
 

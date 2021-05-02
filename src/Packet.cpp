@@ -1,21 +1,5 @@
 #include "Packet.h"
 
-Packet::Packet(size_t size)
-{
-	buffer = new char[size];
-	cursor = buffer;
-	capacity = size;
-	this->size = 0;
-}
-
-Packet::Packet(const std::string& d)
-{
-	buffer = new char[d.size()];
-	cursor = buffer;
-	capacity = d.size();
-	this->size = 0;
-}
-
 Packet::Packet(char* d, size_t size)
 {
 	buffer = d;
@@ -28,21 +12,6 @@ Packet::Packet(char* d, size_t size)
 Packet::~Packet()
 {
 	delete[] buffer;
-}
-
-size_t Packet::GetCapacity() const
-{
-	return capacity;
-}
-
-size_t Packet::GetSize() const
-{
-	return size;
-}
-
-char* Packet::GetBufferPtr() const
-{
-	return buffer;
 }
 
 void Packet::Read(void* outData, size_t bytes) const

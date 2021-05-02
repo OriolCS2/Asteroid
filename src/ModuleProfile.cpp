@@ -75,7 +75,7 @@ void ModuleProfile::ConnectClient()
 	struct sockaddr_in bindAddr;
 	bindAddr.sin_family = AF_INET;
 	bindAddr.sin_port = htons(8000);
-	bindAddr.sin_addr.S_un.S_addr = INADDR_ANY; // Any local IP address
+	bindAddr.sin_addr.S_un.S_addr = INADDR_ANY;
 
 	bind(server, (const struct sockaddr*)&bindAddr, sizeof(bindAddr));
 

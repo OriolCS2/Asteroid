@@ -9,14 +9,8 @@ typedef unsigned int uint;
 
 class Packet {
 public:
-	Packet(size_t size = DEFAULT_PACKET_SIZE);
-	Packet(const std::string& d);
 	Packet(char* d, size_t size);
 	~Packet();
-
-	size_t GetCapacity() const;
-	size_t GetSize() const;
-	char* GetBufferPtr() const;
 
 	void Read(void* outData, size_t bytes) const;
 
