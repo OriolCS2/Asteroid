@@ -116,58 +116,12 @@ std::string* JSONparser::GetStringArray(const std::string& name, std::string* st
 	}
 }
 
-void JSONparser::SetColor(const std::string& name, const Color& color)
-{
-	JSON_Array* arr = json_object_dotget_array(object, name.data());
-	if (arr == nullptr) {
-		JSON_Value* new_val = json_value_init_array();
-		arr = json_value_get_array(new_val);
-		json_object_dotset_value(object, name.data(), new_val);
-	}
-	else {
-		json_array_clear(arr);
-	}
-	json_array_append_number(arr, color.r);
-	json_array_append_number(arr, color.g);
-	json_array_append_number(arr, color.b);
-	json_array_append_number(arr, color.a);
-}
-
-Color JSONparser::GetColor(const std::string& name, Color def)
-{
-	JSON_Value* val = json_object_dotget_value(object, name.data());
-	if (json_value_get_type(val) == JSONArray) {
-		JSON_Array* arr = json_value_get_array_unsafe(val);
-		Color color;
-		color.r = json_array_get_number(arr, 0);
-		color.g = json_array_get_number(arr, 1);
-		color.b = json_array_get_number(arr, 2);
-		color.a = json_array_get_number(arr, 3);
-		return color;
-	}
-	else {
-		return def;
-	}
-}
-
-void JSONparser::SetString(const std::string& name, const std::string& string_parameter)
-{
-	json_object_dotset_string(object, name.data(), string_parameter.data());
-}
-
-const char* JSONparser::GetString(const std::string& name, const char* def)
-{
-	JSON_Value* val = json_object_dotget_value(object, name.data());
-	return (json_value_get_type(val) == JSONString) ? json_value_get_string_unsafe(val) : def;
-}
-
 JSONArraypack* JSONparser::InitNewArray(const std::string& name)
 {
 	JSON_Value* val = json_value_init_array();
 	json_object_dotset_value(object, name.data(), val);
 
 	JSONArraypack* array_pack = new JSONArraypack(json_value_get_array(val), json_value_init_object(), name);
-	array_pack->depth = depth + 1;
 	arrays.push_back(array_pack);
 
 	return array_pack;
@@ -183,7 +137,6 @@ JSONArraypack* JSONparser::GetArray(const std::string& name)
 		JSON_Value* value = json_array_get_value(arr, 0);
 		if (value != nullptr) {
 			JSONArraypack* array_pack = new JSONArraypack(arr, value, name);
-			array_pack->depth = depth + 1;
 			arrays.push_back(array_pack);
 			return array_pack;
 		}

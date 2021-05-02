@@ -33,12 +33,6 @@ public:
 	void SetStringArray(const std::string& name, std::string* strings, int size);
 	std::string* GetStringArray(const std::string& name, std::string* strings, int* size);
 
-	void SetColor(const std::string& name, const Color& color);
-	Color GetColor(const std::string& name, Color def = Color::white);
-
-	void SetString(const std::string& name, const std::string& string_parameter);
-	const char* GetString(const std::string& name, const char* def = "Default");
-
 	JSONArraypack* InitNewArray(const std::string& name);
 	JSONArraypack* GetArray(const std::string& name);
 	virtual void ClearArrays();
@@ -49,7 +43,6 @@ private:
 
 public:
 	std::vector<JSONArraypack*> arrays;
-	int depth = 0;
 	JSON_Object* object = nullptr;
 	JSON_Value* value = nullptr;
 };
