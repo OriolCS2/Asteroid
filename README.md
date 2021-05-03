@@ -13,7 +13,56 @@ GitHub Repository: https://github.com/OriolCS2/Asteroid
 
 ## Usage
 
-// TODO:
+1. Copy 'Asteroid.h' and 'Asteroid.cpp' files from the repository or latest release (posar link) to your game project
+2. Add ```ASTEROID_INIT();``` macro at the init of the application
+  ```cpp
+  void main() 
+  {
+      ASTEROID_INIT();
+      ...
+  } 
+  ```
+3. Add ```ASTEROID_FRAME();``` macro to the main loop of your application
+  ```cpp
+  while(true) 
+  {
+      ASTEROID_FRAME();
+      application.Update();
+  } 
+  ```
+4. In order to instrument a function, add one of the following macros:
+    * Use ```ASTEROID_FUNCTION();``` at the beginning of a function to intrument it with default values
+      ```cpp
+      void SomeFunction() 
+      {
+          ASTEROID_FUNCTION();
+          ...
+      } 
+      ```
+    * Use ```ASTEROID_FUNCTION_EX("My Function");``` at the beginning of a function to intrument it with a given name
+      ```cpp
+      void SomeFunction() 
+      {
+          ASTEROID_FUNCTION_EX("My Function");
+          ...
+      } 
+      ```
+    * Use ```ASTEROID_CATEGORY("My Category", AsteroidColor::ORANGE);``` at the beginning of a function to intrument it with a given name and color
+      ```cpp
+      void SomeFunction() 
+      {
+          ASTEROID_CATEGORY("My Category", AsteroidColor::ORANGE);
+          ...
+      } 
+      ```
+5. Add ```ASTEROID_CLEANUP();``` at the end of the application
+  ```cpp
+  void main() 
+  {
+      ...
+      ASTEROID_CLEANUP();
+  } 
+  ```
 
 ## MIT License
 
