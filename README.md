@@ -66,8 +66,11 @@ GitHub Repository: https://github.com/OriolCS2/Asteroid
 6. Open Asteroid application, instalation (not ready yet) or portable version
 7. Open the application you want to test
 8. Click the play button on the Asteroid interface
+![image](https://user-images.githubusercontent.com/36154523/116930797-839eea80-ac60-11eb-9573-e79b05f1c1d1.png)
 9. Once you think you have enough frames collected, click the pause button
+![image](https://user-images.githubusercontent.com/36154523/116930926-adf0a800-ac60-11eb-9b12-e3982a49d1a4.png)
 10. Examine the frames
+![image](https://user-images.githubusercontent.com/36154523/116931019-ca8ce000-ac60-11eb-85af-6781d8c95ac4.png)
 
 ## MIT License
 
