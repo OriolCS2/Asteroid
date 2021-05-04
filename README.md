@@ -13,7 +13,7 @@ GitHub Repository: https://github.com/OriolCS2/Asteroid
 
 ## Usage
 
-1. Copy 'Asteroid.h' and 'Asteroid.cpp' files from the repository or latest release (posar link) to your game project
+1. Copy 'Asteroid.h' and 'Asteroid.cpp' files from the repository or [latest release](https://github.com/OriolCS2/Asteroid/releases/tag/1.0) to your game project
 2. Add ```ASTEROID_INIT();``` macro at the init of the application
   ```cpp
   void main() 
@@ -63,7 +63,7 @@ GitHub Repository: https://github.com/OriolCS2/Asteroid
       ASTEROID_CLEANUP();
   } 
   ```
-6. Open Asteroid application, instalation (not ready yet) or portable version
+6. Open Asteroid application
 7. Open the application you want to test
 8. Click the play button on the Asteroid interface
 ![image](https://user-images.githubusercontent.com/36154523/116930797-839eea80-ac60-11eb-9573-e79b05f1c1d1.png)
