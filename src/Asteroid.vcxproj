@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{87D3B403-AC0D-44F7-A384-CC0D4630DCF2}</ProjectGuid>
-    <RootNamespace>ProfilerTFG</RootNamespace>
+    <RootNamespace>Asteroid</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>Asteroid</ProjectName>
   </PropertyGroup>
@@ -228,6 +228,7 @@
     <ClInclude Include="PanelFrames.h" />
     <ClInclude Include="PanelSectionTree.h" />
     <ClInclude Include="Parson\parson.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SDL\include\begin_code.h" />
     <ClInclude Include="SDL\include\close_code.h" />
     <ClInclude Include="SDL\include\SDL.h" />
@@ -386,6 +387,12 @@
     <None Include="SDL\include\SDL_config.h.cmake" />
     <None Include="SDL\include\SDL_config.h.in" />
     <None Include="SDL\include\SDL_config_macosx.h.orig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Asteroid.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\installer\Comet.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

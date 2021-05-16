@@ -568,6 +568,7 @@
     <ClInclude Include="BinaryLoad.h">
       <Filter>Tools</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleInput.cpp">
@@ -782,5 +783,15 @@
     <None Include="SDL\include\SDL_config_macosx.h.orig">
       <Filter>Tools\SDL</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Asteroid.rc">
+      <Filter>Modules</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\installer\Comet.ico">
+      <Filter>Modules</Filter>
+    </Image>
   </ItemGroup>
 </Project>

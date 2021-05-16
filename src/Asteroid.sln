@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Asteroid", "Asteroid.vcxproj", "{87D3B403-AC0D-44F7-A384-CC0D4630DCF2}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "installer", "..\installer\installer.vdproj", "{0ABBB11C-C3FA-45F2-BE0C-572B530AECE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,10 @@ Global
 		{87D3B403-AC0D-44F7-A384-CC0D4630DCF2}.Release|x64.Build.0 = Release|x64
 		{87D3B403-AC0D-44F7-A384-CC0D4630DCF2}.Release|x86.ActiveCfg = Release|Win32
 		{87D3B403-AC0D-44F7-A384-CC0D4630DCF2}.Release|x86.Build.0 = Release|Win32
+		{0ABBB11C-C3FA-45F2-BE0C-572B530AECE0}.Debug|x64.ActiveCfg = Debug
+		{0ABBB11C-C3FA-45F2-BE0C-572B530AECE0}.Debug|x86.ActiveCfg = Debug
+		{0ABBB11C-C3FA-45F2-BE0C-572B530AECE0}.Release|x64.ActiveCfg = Release
+		{0ABBB11C-C3FA-45F2-BE0C-572B530AECE0}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
